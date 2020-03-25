@@ -1,0 +1,1225 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={INFSCI 2595 Homework: 05},
+  pdfauthor={Ting-Hsuan Ma},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{INFSCI 2595 Homework: 05}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Assigned March 23, 2020; Due: March 31, 2020}
+\author{Ting-Hsuan Ma}
+\date{Submission time: March 31, 2020 at 9:00AM EST}
+
+\begin{document}
+\maketitle
+
+\hypertarget{collaborators}{%
+\paragraph{Collaborators}\label{collaborators}}
+
+Include the names of your collaborators here.
+
+\hypertarget{overview}{%
+\subsection{Overview}\label{overview}}
+
+This homework assignment serves as a review to help prepare for Test 02.
+It covers important mathematical concepts behind linear and generalized
+linear models. You will get extra practice working with the equations
+behind the functions you have programmed over the last several
+assignments.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{problem-01}{%
+\subsection{Problem 01}\label{problem-01}}
+
+Homework 04 was all about applying linear and generalized linear
+modeling techniques to identify the best performing models. You created
+many spline basis function models with many degrees of freedom to
+identify the simplest possible model that did not overfit to the
+training data. You also fit two logistic regression models to identify
+the simplest model that does not overfit the binary outcome. This
+problem focuses on understanding the matrix sum of squares since it is
+so critical for understanding the uncertainty in the coefficients and
+the relationship between them.
+
+A data set is loaded for you in the code chunk below. The data set
+consists of 2 inputs, \(x_1\) and \(x_2\), and a continuous response,
+\(y\). A glimpse of the data set is provided in the output of the code
+chunk below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob_}\DecValTok{01}\NormalTok{_df <-}\StringTok{ }\NormalTok{readr}\OperatorTok{::}\KeywordTok{read_csv}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/jyurko/INFSCI_2595_Spring_2020/master/hw_data/hw05/hw_05_prob_01_data.csv"}\NormalTok{, }\DataTypeTok{col_names =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   x1 = col_double(),
+##   x2 = col_double(),
+##   y = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob_}\DecValTok{01}\NormalTok{_df }\OperatorTok{%>%}\StringTok{ }\KeywordTok{glimpse}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Observations: 100
+## Variables: 3
+## $ x1 <dbl> -0.14775576, 1.59426168, 0.84069129, 1.67248595, -0.64943858, 0....
+## $ x2 <dbl> 1.0375823, 1.7757642, -0.4059740, -0.3821706, 0.8524313, -0.8020...
+## $ y  <dbl> 1.5331526, 0.4566711, 1.8520017, 3.0913179, 0.5349807, -1.083487...
+\end{verbatim}
+
+The code chunk below creates a scatter plot for you between the response
+and the two inputs. The data is first reshaped into a ``long'' format to
+allow making the separate scatter plots side-by-side with
+\texttt{facet\_grid()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob_}\DecValTok{01}\NormalTok{_df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{tibble}\OperatorTok{::}\KeywordTok{rowid_to_column}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\NormalTok{tidyr}\OperatorTok{::}\KeywordTok{gather}\NormalTok{(}\DataTypeTok{key =} \StringTok{"input_name"}\NormalTok{,}
+                \DataTypeTok{value =} \StringTok{"input_value"}\NormalTok{,}
+                \OperatorTok{-}\NormalTok{rowid, }\OperatorTok{-}\NormalTok{y) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{mapping =} \KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ input_value, }\DataTypeTok{y =}\NormalTok{ y)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{facet_grid}\NormalTok{(}\OperatorTok{~}\NormalTok{input_name) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{HW_MA_TING-HSUAN_05_files/figure-latex/viz_prob_01_scatter-1.pdf}
+
+\hypertarget{a}{%
+\subsubsection{1a)}\label{a}}
+
+In this problem, you will study the behavior of a linear relationship
+with each input plus an interaction term between the two. The mean trend
+expression is written below:
+
+\[ 
+\mu_n = \beta_0 + \beta_1 x_{n,1} + \beta_2 x_{n,2} + \beta_3 x_{n,1} x_{n,2}
+\]
+
+You must create the design matrix for this particular interaction model.
+
+\hypertarget{problem}{%
+\paragraph{PROBLEM}\label{problem}}
+
+\textbf{Create the design matrix associated with the model which
+includes the interaction term between \(x_1\) and \(x_2\). Assign the
+design matrix to the variable \texttt{Xmat}. How many columns are in the
+design matrix? Which column corresponds to the interaction term?}
+
+\emph{HINT}: The column names from a \texttt{matrix} in \texttt{R} can
+be accessed with the \texttt{colnames()} function.
+
+\hypertarget{solution}{%
+\paragraph{SOLUTION}\label{solution}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{b}{%
+\subsubsection{1b)}\label{b}}
+
+You will now calculate the matrix sum of squares.
+
+\hypertarget{problem-1}{%
+\paragraph{PROBLEM}\label{problem-1}}
+
+\textbf{Calculate the matrix sum of squares and assign the result to the
+\texttt{SSmat} variable. What are the dimensions of \texttt{SSmat}?}
+
+\hypertarget{solution-1}{%
+\paragraph{SOLUTION}\label{solution-1}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{c}{%
+\subsubsection{1c)}\label{c}}
+
+Let's take a closer look at the matrix sum of squares to get a better
+picture of its structure.
+
+\hypertarget{problem-2}{%
+\paragraph{PROBLEM}\label{problem-2}}
+
+\textbf{What is the value of the first row, first column
+\(\left[1,1\right]\) element within \texttt{SSmat}? Why does it equal
+that particular value?}
+
+\hypertarget{solution-2}{%
+\paragraph{SOLUTION}\label{solution-2}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{d}{%
+\subsubsection{1d)}\label{d}}
+
+Let's look at another element in the matrix sum of squares.
+
+\hypertarget{problem-3}{%
+\paragraph{PROBLEM}\label{problem-3}}
+
+\textbf{What is the value of the 2nd row, 3rd column in the matrix sum
+of squares? Demonstrate how that value is calculated}
+
+\hypertarget{solution-3}{%
+\paragraph{SOLUTION}\label{solution-3}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{e}{%
+\subsubsection{1e)}\label{e}}
+
+Let's now consider the entire matrix sum of squares.
+
+\hypertarget{problem-4}{%
+\paragraph{PROBLEM}\label{problem-4}}
+
+\textbf{What other elements in the matrix sum of squares are equal to
+the value in the 2nd row and 3rd column? Why is that the case?}
+
+\hypertarget{solution-4}{%
+\paragraph{SOLUTION}\label{solution-4}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{f}{%
+\subsubsection{1f)}\label{f}}
+
+The matrix sum of squares controls the posterior covariance matrix of
+the coefficients. Let's examine the behavior of the posterior covariance
+matrix under two different assumptions for the noise, \(\sigma\).
+
+\hypertarget{problem-5}{%
+\paragraph{PROBLEM}\label{problem-5}}
+
+\textbf{Calculate the posterior covariance matrix assuming \(\sigma=1\).
+Assign the result to \texttt{bcov\_1}. Then calculate the posterior
+covariance matrix assuming \(\sigma=5\) and assign the result to
+\texttt{bcov\_5}.}
+
+\hypertarget{solution-5}{%
+\paragraph{SOLUTION}\label{solution-5}}
+
+The posterior covariance matrix is the squared noise, \(\sigma^2\),
+multiplied by the inverse of the matrix sum of squares. The two
+different cases are calculated below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{bcov_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }
+
+\NormalTok{bcov_}\DecValTok{5}\NormalTok{ <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{g}{%
+\subsubsection{1g)}\label{g}}
+
+Problem 1f) considered two possible noise values. Does the posterior
+\emph{correlation} between the coefficients change based on our assumed
+noise?
+
+\hypertarget{problem-6}{%
+\paragraph{PROBLEM}\label{problem-6}}
+
+\textbf{Convert the posterior covariance matrices to correlation
+matrices. Are the correlation matrices different?}
+
+\hypertarget{solution-6}{%
+\paragraph{SOLUTION}\label{solution-6}}
+
+Your solution here. Insert as many code chunks as you feel are
+appropriate.
+
+\hypertarget{problem-02}{%
+\subsection{Problem 02}\label{problem-02}}
+
+In lecture, most of the detailed derivations we covered were for the
+case a linear model with known noise, \(\sigma\), and an infinitely
+diffuse prior, \(p\left(\boldsymbol{\beta}\right) \propto 1\), on the
+mean trend coefficients. We discussed graphically the behavior of the
+posterior with an informative prior and discussed the closed form
+analytic expression for the posterior when we use Gaussian (or MVN)
+distributions on the coefficients. We also discussed the relationship
+between the Gaussian prior with the Ridge penalty term in non-Bayesian
+settings.
+
+In this problem, you will get practice working through the structure of
+the equations when the noise, \(\sigma\), is considered unknown and must
+be learned along with the \(\boldsymbol{\beta}\) parameters. This is the
+complete structure you worked with in the last assignment when you fit
+the various spline basis models. So you will now step into the math to
+see what was going on behind the scenes in the functions you programmed
+in the \texttt{lm\_logpost()} function from Homework 04.
+
+The complete probability model is written for you below. It uses
+independent Gaussian priors on the coefficients with shared (or common)
+prior mean \(\mu_{\beta}\) and shared prior standard deviation
+\(\tau_{\beta}\). It also uses an Exponential distribution as the prior
+on the unknown noise, \(\sigma\). The rate hyperparameter is now enoded
+as \(\nu\) to avoid confusion with the regularization or penalty factor
+\(\lambda\). So please be aware of the notation change relative to
+Homework 04. You will still work with the mean trend with the
+interaction between the two inputs.
+
+\[ 
+y_n \mid \mu_n, \sigma \sim \mathrm{normal}\left(y_n \mid \mu_n, \sigma \right)
+\]
+
+\[ 
+\mu_n = \beta_0 + \beta_1 x_{n,1} + \beta_2 x_{n,2} + \beta_3 x_{n,1} x_{n,2}
+\]
+
+\[
+\boldsymbol{\beta} \mid \mu_{\beta}, \tau_{\beta} \sim \prod_{d=0}^{D} \left( \mathrm{normal} \left( \beta_d \mid \mu_{\beta}, \tau_{\beta} \right) \right)
+\]
+
+\[ 
+\sigma \mid \nu \sim \mathrm{Exp} \left( \sigma \mid \nu \right)
+\]
+
+I like to use this format to describe the models because it high lights
+each of the key piecs, the likelihood, the deterministic relationship,
+and the priors. However, if we focus on the log-posterior directly, it
+is more convenient to write things in more compact notation. The
+un-normalized log-posterior written as the summation of the
+log-likelihood and the log-prior is given to you below.
+
+\[ 
+\log\left[ p \left( \boldsymbol{\beta}, \sigma \mid \mathbf{X},\mathbf{y} \right) \right] \propto \log\left[p\left(\mathbf{y} \mid \mathbf{X},\boldsymbol{\beta},\sigma\right)\right] +\log\left[p\left(\boldsymbol{\beta} \mid \mu_{\beta},\tau_{\beta}\right)\right] +\log\left[p\left(\sigma \mid \nu \right)\right]
+\]
+
+In this problem, you work through the manipulating each of the
+components of the un-normalized log-posterior to get a feel for the math
+behind the functions when the noise \(\sigma\) is unknown.
+
+\emph{NOTE}: Throughout this problem you are allowed to use separate
+equation blocks for each equation you type. It is easier than placing
+all equations in a single equation block when going through the PDF
+rendering process.
+
+\hypertarget{a-1}{%
+\subsubsection{2a)}\label{a-1}}
+
+You will start with the log-likelihood.
+
+\hypertarget{problem-7}{%
+\paragraph{PROBLEM}\label{problem-7}}
+
+\textbf{Write out the log-likelihood as a function of the unknown noise,
+\(\sigma\), and the unknown coefficients, \(\boldsymbol{\beta}\). Make
+use of matrix notation to write the log-likelihood in terms of the
+design matrix \(\mathbf{X}\). You can drop all constants that do not
+directly involve \(\sigma\) or \(\boldsymbol{\beta}\), thus you can
+write out the log-likelihood up to a normalizing constant.}
+
+\hypertarget{solution-7}{%
+\paragraph{SOLUTION}\label{solution-7}}
+
+Your derivation here.
+
+\hypertarget{b-1}{%
+\subsubsection{2b)}\label{b-1}}
+
+Next, let's consider the log-prior on the mean trend coefficients.
+
+\hypertarget{problem-8}{%
+\paragraph{PROBLEM}\label{problem-8}}
+
+\textbf{Write out the log-prior on the \(\boldsymbol{\beta}\) parameters
+as a function of \(\boldsymbol{\beta}\) and \(\sigma\). You can write
+the log-prior up to a normalizing constant. Does the log-prior on
+\(\boldsymbol{\beta}\) depend on \(\sigma\)?}
+
+\hypertarget{solution-8}{%
+\paragraph{SOLUTION}\label{solution-8}}
+
+Your derivation here.
+
+\hypertarget{c-1}{%
+\subsubsection{2c)}\label{c-1}}
+
+And now let's consider the log-prior on the unknown noise \(\sigma\).
+
+\hypertarget{problem-9}{%
+\paragraph{PROBLEM}\label{problem-9}}
+
+\textbf{Write out the log-prior on the noise \(\sigma\) as a function of
+\(\boldsymbol{\beta}\) and \(\sigma\). You can write the log-prior up to
+a normalizing constant, and thus drop constant terms. Does the log-prior
+on \(\sigma\) depend on \(\boldsymbol{\beta}\)?}
+
+\emph{HINT}: You worked with the pdf to the Exponential distribution in
+Homework 02.
+
+\hypertarget{solution-9}{%
+\paragraph{SOLUTION}\label{solution-9}}
+
+Your derivation here.
+
+\hypertarget{d-1}{%
+\subsubsection{2d)}\label{d-1}}
+
+You have written out each of the components of the log-posterior. It's
+now time to combine them together.
+
+\hypertarget{problem-10}{%
+\paragraph{PROBLEM}\label{problem-10}}
+
+\textbf{Combine the log-likelihood and the log-priors together to write
+out the log-posterior up to a normalizing constant.}
+
+\hypertarget{solution-10}{%
+\paragraph{SOLUTION}\label{solution-10}}
+
+Your solution here.
+
+\hypertarget{e-1}{%
+\subsubsection{2e)}\label{e-1}}
+
+Throughout the semester we have assumed that the prior mean on the
+\(\boldsymbol{\beta}\) parameters is zero, \(\mu_{\beta}=0\). Write out
+the log-posterior function assuming that is the case.
+
+\hypertarget{problem-11}{%
+\paragraph{PROBLEM}\label{problem-11}}
+
+\textbf{Write out the log-posterior function assuming \(\mu_{\beta}=0\).
+Does the prior still have effect when we make that assumption? What
+controls the ``strength'' of the prior?}
+
+\hypertarget{solution-11}{%
+\paragraph{SOLUTION}\label{solution-11}}
+
+Your solution here.
+
+\hypertarget{problem-03}{%
+\subsection{Problem 03}\label{problem-03}}
+
+You will now focus more closely on the unknown \(\sigma\) parameter
+within the log-posterior. In this problem, you will build off of your
+solutions in Problem 02 and make use of the probability
+change-of-variables. In this way you will see what goes on behind the
+scenes when the Laplace Approximation approximates the posterior in the
+unbounded space with the \(\varphi\) parameter.
+
+\hypertarget{a-2}{%
+\subsubsection{3a)}\label{a-2}}
+
+Before performing the change-of-variables, let's rewrite the
+log-posterior to depend on the sum of squared errors (\(SSE\)).
+
+\hypertarget{problem-12}{%
+\paragraph{PROBLEM}\label{problem-12}}
+
+\textbf{Rewrite the un-normalized log-posterior in terms of the
+\(SSE\).}
+
+\hypertarget{solution-12}{%
+\paragraph{SOLUTION}\label{solution-12}}
+
+Your solution here.
+
+\hypertarget{b-2}{%
+\subsubsection{3b)}\label{b-2}}
+
+Up to this point in the semester, you have fit many linear models with
+unknown noise terms. The Laplace Approximation function
+\texttt{my\_laplace()} took care of the optimization and Hessian matrix
+evaluations for you. You had to provide the log-posterior function.
+Because the Laplace Approximation approximates the posterior as a MVN,
+you have been using a change-of-variables transformation to transform
+the lower bounded \(\sigma\) parameter to an unbounded parameter,
+\(\varphi\). The Laplace Approximation was then applied to the joint
+posterior in the unbounded space between \(\boldsymbol{\beta}\) and
+\(\varphi\).
+
+The transformation is applied via a \emph{link} function,
+\(g\left(\cdot\right)\). The unbounded transformed noise \(\varphi\) is
+then:
+
+\[ 
+\varphi = g\left(\sigma\right)
+\]
+
+The original noise parameter is then equal to the \emph{inverse link}
+function applied to the transformed variable:
+
+\[ 
+\sigma = g^{-1} \left(\varphi\right)
+\]
+
+You will work through how the transformation is applied and modifies the
+log-posterior function. Write out the log-posterior function for the
+unbounded variables \(\boldsymbol{\beta}\) and \(\varphi\). You do not
+need to perform all of the substitutions just yet. What must be added to
+the log-posterior based on \(\sigma\) in order to write out the
+log-posterior for \(\varphi\)?
+
+\hypertarget{problem-13}{%
+\paragraph{PROBLEM}\label{problem-13}}
+
+\textbf{Complete the expression below. How should you write out the
+log-posterior relative to \(\sigma\) in terms of \(\varphi\) and what
+must be added to that log-posterior? Work in general terms for now with
+a general link function \(g\left(\cdot\right)\) and general inverse link
+function \(g^{-1}\left(\cdot\right)\)}
+
+\hypertarget{solution-13}{%
+\paragraph{SOLUTION}\label{solution-13}}
+
+Complete the expression below.
+
+\[ 
+\log \left[p\left(\boldsymbol{\beta},\varphi \mid \mathbf{X}, \mathbf{y}\right)\right] = \log \left[p\left(\boldsymbol{\beta}, ? \mid \mathbf{X}, \mathbf{y}\right)\right] + ?
+\]
+
+\hypertarget{c-2}{%
+\subsubsection{3c)}\label{c-2}}
+
+Let's now make use of the transformation that you used in the previous
+homework assignments. The unbounded variable \(\varphi\) will be the
+log-transformation of the noise \(\sigma\):
+
+\[ 
+\varphi = \log\left[\sigma\right]
+\]
+
+\hypertarget{problem-14}{%
+\paragraph{PROBLEM}\label{problem-14}}
+
+\textbf{Derive the log-posterior function relative to
+\(\boldsymbol{\beta}\) and \(\varphi\) completely in terms of
+\(\boldsymbol{\beta}\) and \(\varphi\).}
+
+\hypertarget{solution-14}{%
+\paragraph{SOLUTION}\label{solution-14}}
+
+Your derivation here.
+
+\hypertarget{d-2}{%
+\subsubsection{3d)}\label{d-2}}
+
+The first step in the Laplace Approximation is to identify the posterior
+mode. The gradient vector is calculated and an optimization scheme
+iterates until the mode is found. You do NOT need to calculate the
+complete gradient vector in this problem. You will focus on the partial
+first derivative of the un-normalized log-posterior with respect to
+\(\varphi\).
+
+\hypertarget{problem-15}{%
+\paragraph{PROBLEM}\label{problem-15}}
+
+\textbf{Derive the partial first derivative of the un-normalized
+log-posterior with respect to \(\varphi\).}
+
+\emph{HINT}: You can leave the result in terms of the \(SSE\).
+
+\hypertarget{solution-15}{%
+\paragraph{SOLUTION}\label{solution-15}}
+
+Your derivation here.
+
+\hypertarget{e-2}{%
+\subsubsection{3e)}\label{e-2}}
+
+Once the posterior mode has been identified, the second step of the
+Laplace Approximation is calculate the Hessian matrix - the matrix of
+second derivatives. You do NOT need to calculate the complete Hessian
+matrix. In this problem you will focus on the partial second derivative
+of the un-normalized log-posterior with respect to \(\varphi\).
+
+\hypertarget{problem-16}{%
+\paragraph{PROBLEM}\label{problem-16}}
+
+\textbf{Derive the partial second derivative of the un-normalized
+log-posterior with respect to \(\varphi\).}
+
+\hypertarget{solution-16}{%
+\paragraph{SOLUTION}\label{solution-16}}
+
+Your derivation here.
+
+\hypertarget{f-1}{%
+\subsubsection{3f)}\label{f-1}}
+
+Let's now assume that we are using a very diffuse prior on the noise,
+and thus \(\nu\rightarrow0\), as well as a very diffuse prior on the
+\(\boldsymbol{\beta}\) parameters, \(\tau_{\beta} \rightarrow \infty\).
+Under these conditions the sum of squared errors associated with the OLS
+estimates, \(\boldsymbol{\beta}_{OLS}\), will be denoted as
+\(SSE_{OLS}\).
+
+\hypertarget{problem-17}{%
+\paragraph{PROBLEM}\label{problem-17}}
+
+\textbf{Based on your derivation in Problem 3d), derive the maximum
+likelihood estimate (MLE) on the \(\varphi\) parameter given the OLS
+estimate to the \(SSE\).}
+
+\hypertarget{solution-17}{%
+\paragraph{SOLUTION}\label{solution-17}}
+
+Your derivation here.
+
+\hypertarget{problem-04}{%
+\subsection{Problem 04}\label{problem-04}}
+
+Now that you have explored the math behind the log-posterior in great
+detail, it's time to fit a Bayesian linear model. You will continue to
+use independent Gaussian priors on the \(\boldsymbol{\beta}\) parameters
+with common prior mean \(\mu_{\beta}=0\) and common prior standard
+deviation \(\tau_{\beta}\). Specify the prior on the unknown noise,
+\(\sigma\), as an Exponential distribution with rate parameter
+\(\nu = 1.5\). You will also continue to use the log-transformation on
+the noise parameter. Thus the log-posterior function will be defined in
+terms of the unknown \(\boldsymbol{\beta}\) parameters and the unknown
+\(\varphi\) parameter.
+
+You will continue to work with the linear relationship which includes
+the interaction term:
+
+\[ 
+\mu_n = \beta_0 + \beta_1 x_{n,1} + \beta_2 x_{n,2} + \beta_3 x_{n,1} x_{n,2}
+\]
+
+\hypertarget{a-3}{%
+\subsubsection{4a)}\label{a-3}}
+
+You will define the \texttt{lm\_logpost()} function, just as you did in
+Homework 04. Thus, the first step is to create the list of required
+information which includes the responses, design matrix, and the prior
+hyperparameters. Specify the prior standard deviation to be 5.
+
+However, compared to Homework 04, you must standardize the response
+variable \(y\) before fitting the model.
+
+\hypertarget{problem-18}{%
+\paragraph{PROBLEM}\label{problem-18}}
+
+\textbf{Define the list of required information \texttt{info\_04} in the
+code chunk below. Calculate the standardized response, \texttt{y\_stan}
+and set that equal to the \texttt{yobs} variable in the
+\texttt{info\_04} list.}
+
+\hypertarget{solution-18}{%
+\paragraph{SOLUTION}\label{solution-18}}
+
+Complete the code chunk below by filling in the required information.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### calculate the standardized response}
+\NormalTok{y_stan <-}\StringTok{ }
+
+\NormalTok{info_}\DecValTok{04}\NormalTok{ <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}
+  \DataTypeTok{yobs =}\NormalTok{ ,}
+  \DataTypeTok{design_matrix =}\NormalTok{ ,}
+  \DataTypeTok{mu_beta =}\NormalTok{ ,}
+  \DataTypeTok{tau_beta =}\NormalTok{ ,}
+  \DataTypeTok{sigma_rate =} 
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{b-3}{%
+\subsubsection{4b)}\label{b-3}}
+
+Define the log-posterior function, \texttt{lm\_logpost()}, in the code
+chunk below.
+
+\hypertarget{problem-19}{%
+\paragraph{PROBLEM}\label{problem-19}}
+
+\textbf{Complete the code chunk below. The comments specify what needs
+to be completed.}
+
+\textbf{Once completed test out the function by evaluating the
+log-posterior at two different sets of parameter values. Try out values
+of -2 and 2 for all parameters.}
+
+\emph{HINT}: This should look familiar\ldots{}
+
+\emph{HINT}: If your function is completed successfully, you should get
+a value of -50214.42 for the -2 guess, and a value of -325.3106 for the
+guess of all 2's.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm_logpost <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(unknowns, my_info)}
+\NormalTok{\{}
+  \CommentTok{# specify the number of unknown beta parameters}
+\NormalTok{  length_beta <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# extract the beta parameters from the `unknowns` vector}
+\StringTok{  }\NormalTok{beta_v <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# extract the unbounded noise parameter, varphi}
+\StringTok{  }\NormalTok{lik_varphi <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# back-transform from varphi to sigma}
+\StringTok{  }\NormalTok{lik_sigma <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# extract design matrix}
+\StringTok{  }\NormalTok{X <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# calculate the linear predictor}
+\StringTok{  }\NormalTok{mu <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# evaluate the log-likelihood}
+\StringTok{  }\NormalTok{log_lik <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# evaluate the log-prior}
+\StringTok{  }\NormalTok{log_prior_beta <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\NormalTok{log_prior_sigma <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# add the mean trend prior and noise prior together}
+\StringTok{  }\NormalTok{log_prior <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# account for the transformation}
+\StringTok{  }\NormalTok{log_derive_adjust <-}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\CommentTok{# sum together}
+\StringTok{  }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+Test out the function with a guess of -2 for all parameters below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lm_logpost}\NormalTok{( )}
+\end{Highlighting}
+\end{Shaded}
+
+Test out the function with a guess of 2 for all parameters below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{lm_logpost}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{c-3}{%
+\subsubsection{4c)}\label{c-3}}
+
+The \texttt{my\_laplace()} and the
+\texttt{generate\_lm\_post\_samples()} functions are provided to you in
+the code chunk below. You do not need to modify these code chunks at all
+in this assignment.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### the my_laplace() function is the same you have used in the}
+\CommentTok{### last several assignments}
+\NormalTok{my_laplace <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(start_guess, logpost_func, ...)}
+\NormalTok{\{}
+  \CommentTok{# code adapted from the `LearnBayes`` function `laplace()`}
+\NormalTok{  fit <-}\StringTok{ }\KeywordTok{optim}\NormalTok{(start_guess,}
+\NormalTok{               logpost_func,}
+               \DataTypeTok{gr =} \OtherTok{NULL}\NormalTok{,}
+\NormalTok{               ...,}
+               \DataTypeTok{method =} \StringTok{"BFGS"}\NormalTok{,}
+               \DataTypeTok{hessian =} \OtherTok{TRUE}\NormalTok{,}
+               \DataTypeTok{control =} \KeywordTok{list}\NormalTok{(}\DataTypeTok{fnscale =} \DecValTok{-1}\NormalTok{, }\DataTypeTok{maxit =} \DecValTok{1001}\NormalTok{))}
+  
+\NormalTok{  mode <-}\StringTok{ }\NormalTok{fit}\OperatorTok{$}\NormalTok{par}
+\NormalTok{  h <-}\StringTok{ }\OperatorTok{-}\KeywordTok{solve}\NormalTok{(fit}\OperatorTok{$}\NormalTok{hessian)}
+\NormalTok{  p <-}\StringTok{ }\KeywordTok{length}\NormalTok{(mode)}
+\NormalTok{  int <-}\StringTok{ }\NormalTok{p}\OperatorTok{/}\DecValTok{2} \OperatorTok{*}\StringTok{ }\KeywordTok{log}\NormalTok{(}\DecValTok{2} \OperatorTok{*}\StringTok{ }\NormalTok{pi) }\OperatorTok{+}\StringTok{ }\FloatTok{0.5} \OperatorTok{*}\StringTok{ }\KeywordTok{log}\NormalTok{(}\KeywordTok{det}\NormalTok{(h)) }\OperatorTok{+}\StringTok{ }\KeywordTok{logpost_func}\NormalTok{(mode, ...)}
+  
+  \KeywordTok{list}\NormalTok{(}\DataTypeTok{mode =}\NormalTok{ mode,}
+       \DataTypeTok{var_matrix =}\NormalTok{ h,}
+       \DataTypeTok{log_evidence =}\NormalTok{ int,}
+       \DataTypeTok{converge =} \KeywordTok{ifelse}\NormalTok{(fit}\OperatorTok{$}\NormalTok{convergence }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{,}
+                         \StringTok{"YES"}\NormalTok{, }
+                         \StringTok{"NO"}\NormalTok{),}
+       \DataTypeTok{iter_counts =}\NormalTok{ fit}\OperatorTok{$}\NormalTok{counts[}\DecValTok{1}\NormalTok{])}
+\NormalTok{\}}
+
+\CommentTok{### pay attention to the arguments to this function, they are the same}
+\CommentTok{### as those used in the previous assignment}
+\NormalTok{generate_lm_post_samples <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(mvn_result, length_beta, num_samples)}
+\NormalTok{\{}
+\NormalTok{  MASS}\OperatorTok{::}\KeywordTok{mvrnorm}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ num_samples, }
+                \DataTypeTok{mu =}\NormalTok{ mvn_result}\OperatorTok{$}\NormalTok{mode, }
+                \DataTypeTok{Sigma =}\NormalTok{ mvn_result}\OperatorTok{$}\NormalTok{var_matrix) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{as.data.frame}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }\KeywordTok{tbl_df}\NormalTok{() }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\NormalTok{purrr}\OperatorTok{::}\KeywordTok{set_names}\NormalTok{(}\KeywordTok{c}\NormalTok{(}\KeywordTok{sprintf}\NormalTok{(}\StringTok{"beta_%02d"}\NormalTok{, (}\DecValTok{1}\OperatorTok{:}\NormalTok{length_beta) }\OperatorTok{-}\StringTok{ }\DecValTok{1}\NormalTok{), }\StringTok{"varphi"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{sigma =} \KeywordTok{exp}\NormalTok{(varphi))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+You will now perform the Laplace Approximation to fit the Bayesian
+linear model and generate posterior samples of the parameters.
+
+\hypertarget{problem-20}{%
+\paragraph{PROBLEM}\label{problem-20}}
+
+\textbf{Fit the Bayesian linear model with the Laplace Approximation,
+using a starting guess of all zeros. Generate 2500 posterior samples.
+What is the posterior median on \(\sigma\)? What is the posterior 25th
+and 75th quantiles on \(\sigma\)? Also calculate the 25th, median, and
+75th posterior quantiles on the interaction parameter, \(\beta_3\).}
+
+\hypertarget{solution-19}{%
+\paragraph{SOLUTION}\label{solution-19}}
+
+Fit the model and generate the posterior samples in the code chunk
+below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{laplace_result_a <-}\StringTok{ }\KeywordTok{my_laplace}\NormalTok{( )}
+
+\NormalTok{post_samples_a <-}\StringTok{ }\KeywordTok{generate_lm_post_samples}\NormalTok{( )}
+\end{Highlighting}
+\end{Shaded}
+
+Insert as many additional code chunks as you feel are appropriate.
+
+\hypertarget{d-3}{%
+\subsubsection{4d)}\label{d-3}}
+
+Let's now see what happens if we try out several different prior
+standard deviations on the coefficients. Refit the model but this time
+with \(\tau_{\beta}=25\), and then explore the results.
+
+\hypertarget{problem-21}{%
+\paragraph{PROBLEM}\label{problem-21}}
+
+\textbf{You must create a new list of required information, fit the
+model with the Laplace Approximation, and generate 2500 posterior
+samples. Calculate the 25th, median, and 75th quantiles on the
+interaction parameter, \(\beta_3\), and the noise, \(\sigma\). Are the
+quantiles on \(\sigma\) different than the case with \(\tau_{\beta}\)?}
+
+\hypertarget{solution-20}{%
+\paragraph{SOLUTION}\label{solution-20}}
+
+Make the required list of information, fit the model, and generate the
+samples.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{info_}\DecValTok{04}\NormalTok{_weak <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}
+  \DataTypeTok{yobs =}\NormalTok{ ,}
+  \DataTypeTok{design_matrix =}\NormalTok{ ,}
+  \DataTypeTok{mu_beta =}\NormalTok{ ,}
+  \DataTypeTok{tau_beta =}\NormalTok{ ,}
+  \DataTypeTok{sigma_rate =} 
+\NormalTok{)}
+
+\NormalTok{laplace_result_weak <-}\StringTok{ }\KeywordTok{my_laplace}\NormalTok{( )}
+
+\NormalTok{post_samples_weak <-}\StringTok{ }\KeywordTok{generate_lm_post_samples}\NormalTok{( )}
+\end{Highlighting}
+\end{Shaded}
+
+Insert as many additional code chunks as you feel are appropriate.
+
+\hypertarget{e-3}{%
+\subsubsection{4e)}\label{e-3}}
+
+Now try a strong prior with a prior standard deviation of 1/25. Refit
+the model and regenerate the posterior samples. Do the results change
+now?
+
+\hypertarget{problem-22}{%
+\paragraph{PROBLEM}\label{problem-22}}
+
+\textbf{You must create a new list of required information, fit the
+model with the Laplace Approximation, and generate 2500 posterior
+samples. Calculate the 25th, median, and 75th quantiles on the
+interaction parameter, \(\beta_3\), and the noise, \(\sigma\).}
+
+\textbf{How do the results compare with the previous two prior
+specifications?}
+
+\hypertarget{solution-21}{%
+\paragraph{SOLUTION}\label{solution-21}}
+
+Respecify the model and fit the model in the code chunk below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{info_}\DecValTok{04}\NormalTok{_strong <-}\StringTok{ }\KeywordTok{list}\NormalTok{(}
+  \DataTypeTok{yobs =}\NormalTok{ ,}
+  \DataTypeTok{design_matrix =}\NormalTok{ ,}
+  \DataTypeTok{mu_beta =}\NormalTok{ ,}
+  \DataTypeTok{tau_beta =}\NormalTok{ ,}
+  \DataTypeTok{sigma_rate =} 
+\NormalTok{)}
+
+\NormalTok{laplace_result_strong <-}\StringTok{ }\KeywordTok{my_laplace}\NormalTok{( )}
+
+\NormalTok{post_samples_strong <-}\StringTok{ }\KeywordTok{generate_lm_post_samples}\NormalTok{( )}
+\end{Highlighting}
+\end{Shaded}
+
+Insert as many additional code chunks as you feel are appropriate.
+
+\hypertarget{problem-05}{%
+\subsection{Problem 05}\label{problem-05}}
+
+In addition to stepping through the derivation of the linear model, we
+also went through the key mathematical concepts behind logistic
+regression. In lecture, we derived the gradient and Hessian for a
+logistic regression model assuming an infinitely diffuse prior. We
+discussed the classic approach to fitting the logistic regression model
+with the Iteratively Reweighted Least Squares (IRLS) algorithm. You will
+go through one iteration of IRLS to see how the concepts from the linear
+model extend to a binary classification setting.
+
+The code chunk below reads in a new data set, consisting of four
+continuous inputs, \(x_1\) through \(x_4\), and a binary response,
+\(y\). The binary response is encoded as 0 for the non-event and 1 for
+event. A glimpse of the data is provided for you below.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob_}\DecValTok{05}\NormalTok{_df <-}\StringTok{ }\NormalTok{readr}\OperatorTok{::}\KeywordTok{read_csv}\NormalTok{(}\StringTok{"https://raw.githubusercontent.com/jyurko/INFSCI_2595_Spring_2020/master/hw_data/hw05/hw_05_prob_05_data.csv"}\NormalTok{, }\DataTypeTok{col_names =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   x1 = col_double(),
+##   x2 = col_double(),
+##   x3 = col_double(),
+##   x4 = col_double(),
+##   y = col_double()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob_}\DecValTok{05}\NormalTok{_df }\OperatorTok{%>%}\StringTok{ }\KeywordTok{glimpse}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Observations: 200
+## Variables: 5
+## $ x1 <dbl> -0.1477558, 0.8406913, -0.6494386, 0.5806242, 0.2112185, 0.55058...
+## $ x2 <dbl> 1.0375823, -0.4059740, 0.8524313, 1.4656521, -2.3025271, -2.3980...
+## $ x3 <dbl> 1.59426168, 1.67248595, 0.31214381, -0.78855150, -1.83168391, -0...
+## $ x4 <dbl> 1.77576422, -0.38217064, -0.80204467, -0.52755470, -1.61478088, ...
+## $ y  <dbl> 1, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1...
+\end{verbatim}
+
+\hypertarget{a-4}{%
+\subsubsection{5a)}\label{a-4}}
+
+You will work with a linear additive relationship between the linear
+predictor, \(\eta\), and the inputs. The linear predictor relationship
+is written out for you below.
+
+\[ 
+\eta_n = \beta_0 + \beta_1 x_{n,1} + \beta_2 x_{n,2} + \beta_3 x_{n,3} + \beta_4 x_{n,4}
+\]
+
+Create the design matrix associated with this model.
+
+\hypertarget{problem-23}{%
+\paragraph{PROBLEM}\label{problem-23}}
+
+\textbf{Create the design matrix for the linear additive relationship.
+Assign the result to the \texttt{X05} variable. How many columns are in
+the design matrix?}
+
+\hypertarget{solution-22}{%
+\paragraph{SOLUTION}\label{solution-22}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X05 <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{b-4}{%
+\subsubsection{5b)}\label{b-4}}
+
+The IRLS algorithm is iterative and requires us to specify an initial
+guess for the coefficients. You will define an initial guess of 1.5 for
+all coefficients. Calculate the linear predictor based on the assumed
+coefficient values and the design matrix created in Problem 5a).
+
+\hypertarget{problem-24}{%
+\paragraph{PROBLEM}\label{problem-24}}
+
+\textbf{Define the initial guess parameter vector \texttt{binit} below
+to a vector 1.5 for all parameters. Calculate the linear predictor and
+assign the result to \texttt{eta\_init}. You must use matrix math to
+calculate the linear predictor.}
+
+\hypertarget{solution-23}{%
+\paragraph{SOLUTION}\label{solution-23}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{binit <-}\StringTok{ }
+
+\NormalTok{eta_init <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{c-4}{%
+\subsubsection{5c)}\label{c-4}}
+
+The next step is to calculate the event probability based on the current
+linear predictor guess.
+
+\hypertarget{problem-25}{%
+\paragraph{PROBLEM}\label{problem-25}}
+
+\textbf{Calculate the event probability and assign the result to the
+variable \texttt{mu\_init}.}
+
+\hypertarget{solution-24}{%
+\paragraph{SOLUTION}\label{solution-24}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mu_init <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{d-4}{%
+\subsubsection{5d)}\label{d-4}}
+
+With the even probability calculated with for observation you can now
+calculate the weighting matrix \(\mathbf{S}\).
+
+\hypertarget{problem-26}{%
+\paragraph{PROBLEM}\label{problem-26}}
+
+\textbf{Calculate the weighting matrix \texttt{Sweight} based on the
+current guess for the event probability. What is the dimensionality of
+the \texttt{Sweight} matrix?}
+
+\hypertarget{solution-25}{%
+\paragraph{SOLUTION}\label{solution-25}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### feel free to use as many steps as you feel are appropriate}
+\CommentTok{### to calculate the Sweight matrix}
+\NormalTok{Sweight <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{e-4}{%
+\subsubsection{5e)}\label{e-4}}
+
+In lecture, we discussed how the IRLS algorithm updates the guess for
+the coefficients by calculating the ``working response'',
+\(\mathbf{z}\). Write out the expression for the working response and
+then calculate the working response based on the current guess for the
+coefficients.
+
+\hypertarget{problem-27}{%
+\paragraph{PROBLEM}\label{problem-27}}
+
+\textbf{Write out the expression for the working response and calculate
+it based on the current guess for the parameters. Assing the result to
+the variable \texttt{z\_init}}
+
+\hypertarget{solution-26}{%
+\paragraph{SOLUTION}\label{solution-26}}
+
+Use an equation block to write the expression for the working response.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### calculate the working response}
+\NormalTok{z_init <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{f-2}{%
+\subsubsection{5f)}\label{f-2}}
+
+Before calculating the updated coefficient values, let's first consider
+the weighted sum of squares matrix.
+
+\hypertarget{problem-28}{%
+\paragraph{PROBLEM}\label{problem-28}}
+
+\textbf{Write out the expression for the weighted sum of squares matrix.
+Calculate it based on the current coefficient guess and assign the
+result to the variable \texttt{wSSmat}. How many rows and columns does
+\texttt{wSSmat} have?}
+
+\hypertarget{solution-27}{%
+\paragraph{SOLUTION}\label{solution-27}}
+
+Write the expression for the weighted sum of squares matrix in an
+equation block.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{wSSmat <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{g-1}{%
+\subsubsection{5g)}\label{g-1}}
+
+It's now time to calculate the updated coefficient values,
+\(\boldsymbol{\beta}_{k+1}\).
+
+\hypertarget{problem-29}{%
+\paragraph{PROBLEM}\label{problem-29}}
+
+\textbf{Write out the formula for the new coefficients based on the
+current coefficient guess. Calculate the new coefficients and assign the
+result to \texttt{b\_new}. Display the updated coefficients to the
+screen.}
+
+\hypertarget{solution-28}{%
+\paragraph{SOLUTION}\label{solution-28}}
+
+Write out the formula for the updated coefficients in an equation block.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### calculate the udpated coefficients}
+\NormalTok{b_new <-}\StringTok{ }
+\end{Highlighting}
+\end{Shaded}
+
+Print out the updated coefficients.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{### }
+\end{Highlighting}
+\end{Shaded}
+
+\end{document}
