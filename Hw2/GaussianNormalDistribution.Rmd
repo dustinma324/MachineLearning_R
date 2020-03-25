@@ -1,0 +1,118 @@
+---
+title: "Gaussian Normal Distribution"
+author: "Dustin Ma"
+date: "1/21/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+```{r, load_packages, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+```
+
+## Gaussian Normal Distribution
+``` {r}
+dnorm(x = 1.15)
+dnorm(x = 1.15, mean = 0, sd = 1) # of mean and std
+```
+
+``` {r}
+dnorm(x = -2:2, mean = 0, sd = 1)
+```
+
+``` {r}
+df_gauss <- tibble::tibble(
+  x = seq(-4.5, 4.5, length.out = 1001)
+) %>% 
+  mutate(normal_pdf = dnorm(x))
+```
+
+
+```{r}
+df_gauss %>% 
+  ggplot(mapping = aes(x = x, y = normal_pdf)) +
+  geom_line(mapping = aes(group = 1), size = 1.25) +
+  scale_x_continuous(breaks = -4:4) +
+  theme_bw() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 12))
+```
+
+```{r}
+df_gauss %>% 
+  mutate(normal_cdf = pnorm(q = x)) %>% 
+  ggplot(mapping = aes(x = x, y = normal_cdf)) +
+  geom_line(mapping = aes(group = 1), size = 1.25) +
+  scale_x_continuous(breaks = -4:4) +
+  theme_bw() +
+  theme(axis.text = element_text(size = 12),
+        axis.title = element_text(size = 12))
+```
+
+```{r}
+df_gauss %>% 
+  mutate(normal_cdf = pnorm(q = x)) %>% 
+  tibble::rowid_to_column() %>% 
+  tidyr::gather(key = "key", value = "value", -rowid, -x) %>% 
+  ggplot(mapping = aes(x = x, y = value)) +
+  geom_line(mapping = aes(group = key), size = 1.15) +
+  facet_grid(key ~ ., scales = "free_y") +
+  scale_x_continuous(breaks = -4:4) +
+  theme_bw()
+```
+
+
+## Quantiles
+```{r}
+qnorm(p = 0.5) # value of the 50th quantile
+```
+
+```{r}
+quant = 0.95
+df_gauss %>% 
+  mutate(normal_cdf = pnorm(q = x)) %>% 
+  tibble::rowid_to_column() %>% 
+  tidyr::gather(key = "key", value = "value", -rowid, -x) %>% 
+  ggplot(mapping = aes(x = x, y = value)) +
+  geom_line(mapping = aes(group = key), size = 1.15) +
+  geom_hline(data = data.frame(prob_val = quant, key = c("normal_cdf")),
+             mapping = aes(yintercept = prob_val),
+             color = "red") +
+  geom_vline(xintercept = qnorm(quant), color = "navyblue") +
+  facet_grid(key ~ ., scales = "free_y") +
+  scale_x_continuous(breaks = -4:4) +
+  theme_bw()
+```
+
+```{r}
+df_gauss %>% 
+  mutate(normal_cdf = pnorm(q = x)) %>% 
+  tibble::rowid_to_column() %>% 
+  tidyr::gather(key = "key", value = "value", -rowid, -x) %>% 
+  mutate(show_area = ifelse(key == "normal_cdf", 
+                            NA,
+                            between(x, qnorm(0.025), qnorm(0.975)))) %>% 
+  ggplot(mapping = aes(x = x, y = value)) +
+  geom_area(mapping = aes(fill = show_area)) +
+  geom_line(mapping = aes(group = key), size = 1.15) +
+  geom_hline(data = data.frame(prob_val = c(0.025, 0.975), key = c("normal_cdf")),
+             mapping = aes(yintercept = prob_val),
+             color = "red") +
+  geom_vline(xintercept = qnorm(c(0.025, 0.975)), color = "navyblue") +
+  facet_grid(key ~ ., scales = "free_y") +
+  scale_fill_manual("Area under the density curve for probability interval",
+                    values = c("TRUE" = "red",
+                               "FALSE" = "grey",
+                               "NA" = NA),
+                    labels = c("TRUE" = "included in integral",
+                               "FALSE" = "outside integral",
+                               "NA" = NA)) +
+  scale_x_continuous(breaks = -4:4) +
+  theme_bw() +
+  theme(legend.position = "top")
+```
