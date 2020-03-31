@@ -1,0 +1,278 @@
+---
+title: "INFSCI 2595 Spring 2020: Test 02 additional review"
+subtitle: "Questions"
+author: "Dr. Joseph P. Yurko"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+In lecture and the homework, we have focused on linear models and logistic regression with simple linear additive relationships and basis functions. However, there are many other types of modeling tasks that we have not addressed. That said, all such tasks build off of the fundamental concepts we have addressed in this course. By using a probabilistic approach to modeling, which focuses on the distributions to represent our models, we can easily "swap out" one distribution for another, which the situation calls for it. This allows us to extend our modeling structure to many different applications. We simply need to specify the following:  
+
+* A likelihood function - relates model output to observed response  
+* Deterministic function(s) - the input to output relationship, as well as transformations (if necessary)  
+* Priors on unknown parameters - enforces constraints to regularize parameters  
+
+This report demonstrates how we can extend these principals to a robust regression task. We did not explicitly discuss this topic in class, but pay attention to how by defining those three primary areas - the likelihood, the deterministic function, and the prior - we can tackle this seemingly new situation. This report also serves as additional review for Test 02, because you will be assessed on your understanding of how to assemble each of those three primary areas in model building.  
+
+## Robust regression
+
+We have used the Gaussian distribution as the likelihood for continuous output modeling tasks (regression). We discussed how maximizing the Gaussian likelihood is equivalent to minimizing the sum of squared errors ($SSE$). Thus, the Maximum Likelihood Estimates (MLE) to the mean trend coefficients (the $\boldsymbol{\beta}$ parameters of a linear model) are equivalent to the Ordinary Least Squares (OLS) estimates.  
+
+As useful as this structure is, sometimes we will encounter observations that appear "unusual". They seem to break the trends associated with the rest of the data. A Gaussian likelihood is sensitive to these so called "outlier" points. Our models will miss the true trend represented in the data just because of a small number of points. Rather than trying to remove those points, we can consider alternative distributions for the likelihood.  
+
+The t-distribution is one such "long tailed" distribution to consider when a dataset seems to include outliers. By switching to a t-distribution from the Gaussian, we will make our model "robust" and therefore less sensitive to the outliers. Trying out a t-distribution can be useful for testing the sensitivity of our model to our choice of the Gaussian likelihood. This report will not go into a lot of detail around robust regression. We will instead focus on how we can setup of the model using the concepts introduced throughout the semester.  
+
+The t-distribution has 3 parameters. The location, $\mu$, the scale, $\sigma$, and the degrees-of-freedom usually denoted as $\nu$. The t-distribution for a random variable $y$ will be written in short hand as:  
+
+$$ 
+y \mid \mu, \sigma, \nu \sim t_{\nu} \left(y \mid \mu, \sigma\right)
+$$
+
+Notice above that the degrees-of-freedom is denoted as a subscript to the letter $t$.  
+
+As $\nu\rightarrow\infty$ the t-distribution converges to a Gaussian. When $\nu=1$ the t-distribution if equivalent to a Cauchy distribution. For those interested to learn about other distributions, the Cauchy distribution violates the Central Limit Theorem. The mean and variance of a Cauchy are undefined! The degrees-of-freedom, $\nu$, therefore allows us the flexibility to consider many different scenarios. When $\nu$ is a small value, such as 3 to 5, our likelihood will have "long tails". Outlier points, although rare, are "explainable" by the long tails of the t-distribution which keeps the scale, $\sigma$, moderate. However, if we would set $\nu$ to be a large value and thus approach Gaussian-like behavior, the only way for a model to "explain" outlier points is to drive up the noise $\sigma$. Our model would therefore become less accurate and precise of the overall trend represented by the majority of the observations.  
+
+### Model structure
+
+For robust regression, we will relate the observed $N$ responses, $y_n$, to the model response via a t-distribution as the likelihood. The t-distribution has a location parameter, $\mu$, which corresponds to central tendency. Thus, we will place our deterministic function for the model response on the the location parameter. The location parameter will depend on the inputs through a specific parametric function, just like we have used throughout the semester. Let's consider the general case of $D$ inputs or features that we have already compiled into a design matrix, $\mathbf{X}$. The design matrix has $N$ rows and $D+1$ columns, and so we are including the intercept column of 1's. The location parameter associated with the $n$-th observations, $\mu_n$, is the same linear basis formulation that we have used in this course, which can be written as a summation or as an inner product:  
+
+$$ 
+\mu_n = \sum_{d=0}^{D}\left(\beta_d x_{n,d} \right) = \mathbf{x}_{n,:} \boldsymbol{\beta}
+$$
+
+When checking the assumption of using a Gaussian likelihood, it is common to treat the degrees-of-freedom as a fixed parameter. This allows us to focus on the other parameters common to a linear model with a Gaussian likelihood. Namely, the mean (or location) trend coefficients, $\boldsymbol{\beta}$, and the noise (or scale) $\sigma$. If we have already fit a linear model with a Gaussian likelihood, we can compare the posterior distributions on the $\boldsymbol{\beta}$ and $\sigma$ parameters to those determined a t-distribution likelihood and a small value for the degrees-of-freedom, $\nu$. Long story short, that means we need prior distributions on the same set of parameters that we used in our standard linear model.  
+
+Let's continue to use independent Gaussian distributions with a shared or common prior mean, $\mu_{\beta}$, and prior standard deviation, $\tau_{\beta}$. The $\boldsymbol{\beta}$ parameter prior is then:  
+
+$$ 
+\boldsymbol{\beta} \mid \mu_{\beta}, \tau_{\beta} \sim \prod_{d=0}^{D} \left( \mathrm{normal} \left( \beta_d \mid \mu_{\beta}, \tau_{\beta} \right) \right)
+$$
+
+Let's also continue to use an Exponential prior on the noise (or scale), $\sigma$. The rate parameter will be denoted as $\lambda_{\sigma}$ since $\nu$ is being used for the degrees-of-freedom of the t-distribution. Unfortunately the same Greek letters have been used in different modeling applications, so please be cautious about what letter corresponds to what parameter. To try and avoid confusion with the regularization or penalty factor $\lambda$ the subscript $\sigma$ is given to the rate parameter. The Exponential prior "short hand" notation for the noise parameter is:  
+
+$$ 
+\sigma \mid \lambda_{\sigma} \sim \mathrm{Exp} \left( \sigma \mid \lambda_{\sigma} \right)
+$$
+
+### Posterior
+
+We have everything we need to define the model. The un-normalized posterior on the unknown parameters $\boldsymbol{\beta}$ and $\sigma$ is usually written as the product of the likelihood and the prior. Note that the expression below is un-normalized because we are neglecting the denonimator of Bayes' Theroem, the marginal likelihood (or Evidence).  
+
+$$ 
+p\left(\boldsymbol{\beta}, \sigma \mid \mathbf{y}, \mathbf{X}, \nu\right) \propto p\left( \mathbf{y} \mid \mathbf{X}, \boldsymbol{\beta}, \sigma, \nu \right) \times p\left(\boldsymbol{\beta}, \sigma\right)
+$$
+
+Even though we are using a t-distribution as the likelihood, we will continue to assume that each observation is **conditionally independent**, given the inputs and parameters. That allows us to factor the complete likelihood into the product of $N$ independent t-distribution likelihoods:  
+
+$$ 
+p\left(\boldsymbol{\beta}, \sigma \mid \mathbf{y}, \mathbf{X}, \nu\right) \propto \prod_{n=1}^{N} \left( t_{\nu}\left(y_n \mid \mathbf{x}_{n,:}, \boldsymbol{\beta}, \sigma \right) \right) \times p\left(\boldsymbol{\beta}, \sigma\right)
+$$
+
+In this course, we have assumed the $\boldsymbol{\beta}$ parameters and the noise (or scale) parameter, $\sigma$, to be a-priori independent. Thus, the "complete" joint prior distribution is factored into the product of the $\boldsymbol{\beta}$ and $\sigma$ priors:  
+
+$$ 
+p\left(\boldsymbol{\beta}, \sigma \mid \mathbf{y}, \mathbf{X}, \nu\right) \propto \prod_{n=1}^{N} \left( t_{\nu}\left(y_n \mid \mathbf{x}_{n,:}, \boldsymbol{\beta}, \sigma \right) \right) \times p\left(\boldsymbol{\beta}\right) \times p\left(\sigma\right)
+$$
+
+We can plug in the specific priors we are using to complete the un-normalized posterior for robust regression:  
+
+$$ 
+p\left(\boldsymbol{\beta}, \sigma \mid \mathbf{y}, \mathbf{X}, \nu\right) \propto \prod_{n=1}^{N} \left( t_{\nu}\left(y_n \mid \mathbf{x}_{n,:}, \boldsymbol{\beta}, \sigma \right) \right) \times \prod_{d=0}^{D} \left( \mathrm{normal} \left( \beta_d \mid \mu_{\beta}, \tau_{\beta} \right) \right) \times \mathrm{Exp} \left( \sigma \mid \lambda_{\sigma} \right)
+$$
+
+### Probability model format
+
+In this class we have written our models several different ways. I like to use the modeling format of the Stan programming language to define the model structure. This way, we will explicitly define each of the three primary areas described at the start of the report. Because of that, the likelihood will be written in terms of the model response, $\mu_n$, rather than plugging in for the parametric expression directly.  
+
+Assuming the observations are conditionally independent, the likelihood of the $n$-th observation can be simply written as:  
+
+$$ 
+y_n \mid \mu_n, \sigma, \nu \sim t_{\nu} \left(y_n \mid \mu_n, \sigma \right)
+$$
+
+Remember that we are modeling the location because that represents the central behavior of the response. The location trend is a deterministic function of the inputs, and is written below using the inner-product formulation:  
+
+$$ 
+\mu_n = \mathbf{x}_{n,:} \boldsymbol{\beta}
+$$
+
+The last portion of the Probability model format is to specify the priors. The prior on the location trend coefficients is just what we wrote before, and is repeated below:  
+
+$$ 
+\boldsymbol{\beta} \mid \mu_{\beta}, \tau_{\beta} \sim \prod_{d=0}^{D} \left( \mathrm{normal} \left( \beta_d \mid \mu_{\beta}, \tau_{\beta} \right) \right)
+$$
+
+The prior on the scale parameter, $\sigma$, was also given previously, but is rewritten below:  
+
+$$ 
+\sigma \mid \lambda_{\sigma} \sim \mathrm{Exp} \left( \sigma \mid \lambda_{\sigma} \right)
+$$
+
+What's the point of this notation? It represents the basic building blocks we need to specify in order to execute fitting our model. We can define a function to evaluate the log-posterior of our robust regression model. If we wanted to fit that model with the Laplace Approximation, we just need a way to maximize the function and then evaluate the Hessian matrix. In `R`, we saw how to do that with `optim()`, but there are analogous functions in other languages. If you use Python there is the `minimize()` function from Scipy (see the documentation [here](https://docs.scipy.org/doc/scipy/reference/tutorial/optimize.html)). If you prefer MATLAB, the Optimization Toolbox contains many different functions for all kinds of optimization problems (see documentation [here](https://www.mathworks.com/products/optimization.html)).  
+
+You will not be tested on `R` programming in Test 02. However, let's see a simple example in `R` for how to define the log-posterior for robust regression. The code chunk below defines the `logpost_robust()` function. The log-likelihood, deterministic function, and log-priors are defined within it using notation consistent with that in the homework assignments. Note that the function below does not perform the change-of-variables on the scale parameter $\sigma$. However, in practice if we wanted to use the Laplace Approximation to fit the robust regression model, we would want to perform the change-of-variables, $\varphi = \log\left[\sigma\right]$, just as you have done in the assignments. Also note that the `R` function `dt()` evaluates the standard t-distribution density. Thus, it cannot handle a general location and scale parameter. However, the t-distribution is relatively easy to modify. In fact, [Wikipedia](https://en.wikipedia.org/wiki/Location%E2%80%93scale_family#Converting_a_single_distribution_to_a_location%E2%80%93scale_family) shows how to adjust the `dt()` function to handle the location-scale parameterization. The modification steps are used in the code chunk below to define the `log_dt_ls()` function, just as is done in the Wikipedia article, except the log-density is returned.  
+
+```{r, example_robust_regression_function}
+### define the generalized t-distribution density
+log_dt_ls <- function(x, df, mu, sigma)
+{
+  -log(sigma) + dt((x - mu)/sigma, df, log = TRUE)
+}
+
+logpost_robust <- function(unknowns, my_info)
+{
+  # extract the beta parameters
+  length_beta <- ncol(my_info$design_matrix)
+  beta_v <- unknowns[1:length_beta]
+  
+  # extract the scale parameter
+  lik_sigma <- unknowns[length_beta + 1]
+  
+  # extract design matrix
+  X <- my_info$design_matrix
+  
+  # calculate the location trend, the linear
+  # predictor
+  location_trend <- as.vector(X %*% as.matrix(beta_v))
+  
+  # evaluate the log-likelihood
+  log_lik <- sum(log_dt_ls(x = my_info$yobs,
+                           df = my_info$degrees_freedom,
+                           mu = location_trend,
+                           sigma = lik_sigma))
+  
+  # evaluate the log-priors
+  log_prior_beta <- sum(dnorm(x = beta_v,
+                              mean = my_info$mu_beta,
+                              sd = my_info$tau_beta,
+                              log = TRUE))
+  
+  log_prior_sigma <- dexp(x = lik_sigma,
+                          rate = my_info$sigma_rate, 
+                          log = TRUE)
+  
+  # sum together
+  log_lik + log_prior_beta + log_prior_sigma
+}
+```
+
+## Mathematical derivations
+
+We saw how we can create the model without really going into details about what's going on behind the scenes. So let's try and understand the math of the robust regression model. We will step through the math of the t-distribution likelihood to see how it relates to the Gaussian likelihood that we have worked with extensively this semester. The prior formulation is identical to what we have used before, so we will not step through that portion of the log-posterior.  
+
+The $n$-th observation t-distribution likelihood is proportional to the expression shown below.  
+
+$$ 
+t_{\nu} \left( y_n \mid \mu_n, \sigma \right) \propto \frac{1}{\sqrt{\nu \pi \sigma^2}} \left( 1 + \frac{1}{\nu \sigma^2} \left( y_n - \mu_n \right)^{2} \right)^{-\frac{\nu+1}{2}}
+$$
+
+The mathematical derivations are presented as a series of practice questions. Try and go through the steps yourself before looking through the solutions.  
+
+#### QUESTION
+
+What is the log of the $n$-th observation's t-distribution likelihood up to a normalizing constant?  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Rewrite the log-likelihood in terms of the residual or error, $\epsilon_n$, between the observed response and the model.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Rewrite the expression within the $\log\left[ \cdot \right]$, of the log-likelihood such that the squared residual is added to the degrees-of-freedom multiplied by the squared noise, $\nu \sigma^2$.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Sum over the $N$ observations to derive the t-distribution likelihood up to a normalizing constant.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Earlier in this report, it was mentioned that if we would use large values of $\nu$ the t-distribution converges to a Gaussian. We can show that is indeed true. To do so, we need to use the following approximation to the t-distribution likelihood. As $\nu \rightarrow \infty$:  
+
+$$ 
+\log\left[\nu \sigma^2 + \epsilon_{n}^{2}\right] \approx \log[\nu \sigma^2] + \frac{\epsilon_n^2}{\nu \sigma^2}
+$$
+
+Using the approximation above, rewrite the log-likelihood in terms of the $SSE$ when $\nu \rightarrow \infty$.  
+
+#### SOLUTION
+
+Your work here.
+
+#### QUESTION
+
+Show that the log-likelihood, up to a normalizing constant, is identical to the Gaussian log-likelihood when $\nu \rightarrow \infty$.  
+
+#### SOLUTION
+
+Your work here.  
+
+## Design matrix
+
+Let's get some extra practice working with the design matrix. We will assume that for our robust regression task, we are interested in a sine-function basis of a single input, $x$:  
+
+$$ 
+\mu_n = \beta_0 + \beta_1 \sin\left(1 + x_{n}^2\right) + \beta_2 \sin\left(1 + x_{n}^{4} \right)
+$$
+
+Thus, even though we have 2 features, each feature is clearly a non-linear function of the input.  
+
+You will work through some of the matrix math structure of the model in the following questions.  
+
+#### QUESTION
+
+Write out the first 4 rows of the design matrix. You can use either the $\mathbf{X}$ notation or the basis function design matrix notation, $\mathbf{\Phi}$. Either way, you must include the intercept column within your design matrix.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Write out the column vector of all unknown $\boldsymbol{\beta}$ parameters.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+If we would use an infinitely diffuse prior on the parameters, the posterior mode converges to the MLE. Write out the expression for the MLE on the $\boldsymbol{\beta}$ parameters, assuming we had set the degrees-of-freedom of the t-distribution likelihood to a very large value.  
+
+#### SOLUTION
+
+Your work here.
+
+#### QUESTION
+
+The matrix sum-of-squares is very important to the behavior of linear models. We saw that for logistic regression a weighted matrix sum-of-squares plays an equally critical role. Write out the expression for the matrix sum-of-squares in matrix notation as well as the summation notation.  
+
+#### SOLUTION
+
+Your work here.  
+
+#### QUESTION
+
+Write out the contribution of the first observation to the matrix sum-of-squares for our specific basis expansion.  
+
+#### SOLUTION
