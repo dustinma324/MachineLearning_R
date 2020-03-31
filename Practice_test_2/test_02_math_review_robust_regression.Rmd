@@ -179,7 +179,9 @@ What is the log of the $n$-th observation's t-distribution likelihood up to a no
 
 #### SOLUTION
 
-Your work here.  
+$$ 
+\log[t_{\nu} \left( y_n \mid \mu_n, \sigma \right)] \propto  -\frac{1}{2}\log[\sigma^2] -(\frac{\nu+1}{2}) \log[\left( 1 + \frac{1}{\nu \sigma^2} \left( y_n - \mu_n \right)^{2} \right)]
+$$  
 
 #### QUESTION
 
@@ -187,7 +189,9 @@ Rewrite the log-likelihood in terms of the residual or error, $\epsilon_n$, betw
 
 #### SOLUTION
 
-Your work here.  
+$$ 
+\log[t_{\nu} \left( y_n \mid \mu_n, \sigma \right)] \propto  -\frac{1}{2}\log[\sigma^2] -(\frac{\nu+1}{2}) \log[\left( 1 + \frac{{\epsilon_{n}}^2}{\nu \sigma^2}  \right)]
+$$ 
 
 #### QUESTION
 
@@ -195,7 +199,9 @@ Rewrite the expression within the $\log\left[ \cdot \right]$, of the log-likelih
 
 #### SOLUTION
 
-Your work here.  
+$$ 
+\log[t_{\nu} \left( y_n \mid \mu_n, \sigma \right)] \propto  \frac{\nu}{2}\log[\sigma^2] -(\frac{\nu+1}{2}) \log[\nu\sigma^2+\epsilon_n^2]
+$$  
 
 #### QUESTION
 
@@ -203,7 +209,13 @@ Sum over the $N$ observations to derive the t-distribution likelihood up to a no
 
 #### SOLUTION
 
-Your work here.  
+$$ 
+\log[t_{\nu} \left( y_n \mid \mu_n, \sigma \right)] \propto  \sum_{n=1}^{N} (\frac{\nu}{2}\log[\sigma^2] -(\frac{\nu+1}{2}) \log[\nu\sigma^2+\epsilon_n^2])
+$$  
+
+$$ 
+\log[t_{\nu} \left( y_n \mid \mu_n, \sigma \right)] \propto   \frac{\nu N}{2}\log[\sigma^2] \sum_{n=1}^{N}-(\frac{\nu+1}{2}) \log[\nu\sigma^2+\epsilon_n^2]
+$$ 
 
 #### QUESTION
 
@@ -217,7 +229,9 @@ Using the approximation above, rewrite the log-likelihood in terms of the $SSE$ 
 
 #### SOLUTION
 
-Your work here.
+$$ 
+[\frac{\nu}{2}-\frac{\nu+1}{2}]N\log(\sigma^2) - \frac{\nu+1}{2}(\frac{SSE}{\nu\sigma^2})
+$$
 
 #### QUESTION
 
@@ -225,7 +239,9 @@ Show that the log-likelihood, up to a normalizing constant, is identical to the 
 
 #### SOLUTION
 
-Your work here.  
+$$
+-\frac{N}{2}\log(\sigma^2) - \frac{SSE}{2\sigma^2}
+$$
 
 ## Design matrix
 
@@ -245,7 +261,14 @@ Write out the first 4 rows of the design matrix. You can use either the $\mathbf
 
 #### SOLUTION
 
-Your work here.  
+$$
+\begin{bmatrix}
+1 & \sin(1+x_1^2) & \sin(1+x_1^4) \\
+1 & \sin(1+x_2^2) & \sin(1+x_2^4) \\
+1 & \sin(1+x_3^2) & \sin(1+x_3^4) \\
+1 & \sin(1+x_4^2) & \sin(1+x_4^4) \\
+\end{bmatrix}
+$$ 
 
 #### QUESTION
 
@@ -253,7 +276,13 @@ Write out the column vector of all unknown $\boldsymbol{\beta}$ parameters.
 
 #### SOLUTION
 
-Your work here.  
+$$
+\begin{bmatrix}
+\beta_0 \\
+\beta_1 \\
+\beta_2 \\
+\end{bmatrix}
+$$  
 
 #### QUESTION
 
@@ -261,7 +290,9 @@ If we would use an infinitely diffuse prior on the parameters, the posterior mod
 
 #### SOLUTION
 
-Your work here.
+$$
+\beta_{OLS} = (X^TX)^{-1}X^Ty
+$$
 
 #### QUESTION
 
@@ -269,10 +300,23 @@ The matrix sum-of-squares is very important to the behavior of linear models. We
 
 #### SOLUTION
 
-Your work here.  
+$$
+X^TX = \sum_{n=1}^N \{x_{n,:}^Tx_{n,:} \}
+$$
 
 #### QUESTION
 
 Write out the contribution of the first observation to the matrix sum-of-squares for our specific basis expansion.  
 
 #### SOLUTION
+
+$$
+\begin{bmatrix}
+1 \\
+\sin(1+x_1^2) \\
+\sin(1+x_1^4)
+\end{bmatrix}
+\begin{bmatrix}
+1 & \sin(1+x_1^2) & \sin(1+x_1^4)
+\end{bmatrix}
+$$
