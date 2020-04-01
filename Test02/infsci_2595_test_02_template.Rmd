@@ -44,16 +44,13 @@ $$
 Does this model include a non-linear relationship between the mean trend and the inputs?
 
 ### Solution 1a)
-
 Yes, the terms assosicated with $\beta_2$ is multiplied by a non-linear relationship between the mean trend and the inputs.
 
 ### 1b) (2 points)
-
 Is this a linear model? Why or why not?  
 
 ### Solution 1b)
-
-Yes, this is still a linear model. For a model to be non-linear, it is depended on the $\beta$-parameters.
+Yes, this is still a linear model. For a model to be non-linear, it is depended on the $\beta$-parameters and the mean trend.
 
 ### 1c) (2 points)
 
@@ -141,6 +138,9 @@ You will continue working with the model specified in Problem 1. You will consid
 
 If you would fit the model in Problem 1 with the Laplace Approximation, why is it a good idea to transform $\sigma$ to a parameter $\varphi$ with a log-transformation?  
 
+### Solution 2a)
+It is a good idea because we transform from the bounded $\sigma$ to a new unbounded variable $\varphi$. 
+
 ### 2b) (2 points)
 
 We are also interested in a model with the following mean trend expression:  
@@ -153,33 +153,57 @@ The prior on the mean trend coefficients and $\sigma$ are the same as those used
 
 Based on these results, is the model from Problem 1 definitely worse than the model in this problem? Why or why not?  
 
+### Solution 2b)
+Based on these results, we can not concluded that the model in problem 1 is definitly worse than the model in this problem. Having a higher R-squared value does mean a better model, but this problem is also using a higher order model and can be overfitting the data. Other performance meterics should be involved to fully answer the question of which problem's model is better.
+
 ### 2c) (2 points)
 
 The Laplace Approximation allows us to estimate the log-Evidence. The log-Evidence includes a penalty term, in addition to the term associated with goodness-of-fit. How are models penalized based upon the Laplace Approximation's estimate to the log-Evidence?  
+
+### Solution 2c)
+Models based upon the Laplace Approximation's estimate to the log-Evidence are also penalized by the Bayesian Information Criterion (BIC). The BIC penalizes the data fit through the log-likelihood based on the number of parameters. As more parameters are added to the model, a negative contribution to the evidence is repeated applied.
 
 ### 2d) (2 points)
 
 Would you expect the penalty term to be lower or higher for the model from Problem 1 relative to the model introduced in Problem 2? Why?  
 
+### Solution 2d)
+The model in problem 1 will recieve a lower penalty in comparison to the model in problem 2 because problem 2's model has more parameters.
+
 ### 2e) (2 points)
 
 If you decided to use k-fold cross-validation to compare the two models, how many times would each observation be used to evaluate the model performance if we used 5-fold cross-validation?  
+
+### Solution 2e)
+Each observation will be used 5 times per model if we were to use a 5-fold corss-validation.
 
 ### 2f) (2 points)
 
 If we use 5-fold cross-validation, how many times would we train and test each model?  
 
+### Solution 2f)
+Using 5-fold cross-validation, we would train the model 5 times, and testing each training model 5 times for a total of 25 validations.
+
 ### 2g) (2 points)
 
 If we use 5-fold cross-validation how can we assess which model is better if we are interested in the RMSE?  
+
+### Solution 2g)
+If we are interested in the RMSE of the 5-fold cross-validation, we can plot the RMSE of each individual fold, 5 in our case. Then, find the mean and variance of the RMSE for the 5 set of comparing models. The model with low RMSE mean and variance will perform the best on average. 
 
 ### 2h) (2 points)
 
 How many times would we train each model if we used Leave-One-Out (LOO) cross-validation, instead of 5-fold cross-validation?  
 
+### Solution 2h)
+Using Leave-One-Out (LOO), we should train the model as many times as we have observations. Based on problem 1, we will have to train out model 25 times since we have $N=25$ total observations.
+
 ### 2i) (2 points)
 
 Whether we use an information criterion or cross-validation to identify the best model, what are trying to guard against?  
+
+### Solution 2i)
+We are trying to guard against over fitting to the data set, poor generalization. 
 
 ## Problem 3
 
