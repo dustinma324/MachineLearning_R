@@ -231,49 +231,115 @@ $$
 
 Is the model specified in the problem statement to Problem 3 a linear model?  
 
+### Solution 3a)
+Yes, the model to problem 3 is still a linear model. The function $\eta$ is linearly related to the unknown $\beta$ coefficients.
+
 ### 3b) (2 points)
 
 As you can see in the model specification, the variable $\eta_n$ is related to the event probability, $\mu_n$, via a transformation or *link* function. Specifically, you are using the logit-transformation to relate $\mu_n$ to $\eta_n$.  
 
 Would you still use the logit-transformation even if you do not fit the model with the Laplace Approximation?  
 
+### Solution 3b)
+Yes, for a binary classification we would like to use the logit link function even if Lapalce Approximation isn't used to fit the model.
+
 ### 3c) (4 points)
 
 Write out the first 2 rows of the design matrix, $\mathbf{X}$, associated with the model defined in Problem 3.  
+
+### Solution 3c)
+$$
+\mathbf{X}_{1:2,:} = 
+\begin{bmatrix}
+1 & x_{1,1} & x_{1,2} \\
+1 & x_{2,1} & x_{2,2} \\
+\end{bmatrix}
+$$ 
 
 ### 3d) (3 points)
 
 Write out the expression for the 2nd observation's log-likelihood. You may keep the expression in terms of the outcome, $y_{n=2}$, and the event probability, $\mu_{n=2}$.  
 
+### Solution 3d)
+$$
+\log[Bernoulli(y_2 \mid \mu_2)] = y_{2}\log[\mu_2] + (1-y_2)\log[1-\mu_2]
+$$
+$$ 
+\mu_2 = \mathrm{logit}^{-1} \left(\eta_2\right)
+$$
+
+$$ 
+\eta_2 = \beta_0 + \beta_1 x_{2,1} + \beta_2 x_{2,2}
+$$
 ### 3e) (2 points)
 
 The Hessian matrix of the log-likelihood depends on the weighting matrix, $\mathbf{S}$. Describe in words what the weighting matrix contains along its main diagonal.  
+
+### Solution 3e)
+The weighting matrix's diagonal contains the Bernoulli variance associated with the ovservations.
 
 ### 3f) (8 points)
 
 Write out the contribution of the 2nd observation to the weighted sum-of-squares matrix.  
 
+### Solution 3f)
+$$
+\mathbf{X}^T\mathbf{S}\mathbf{X} = \sum_{n=1}^{N=2} (\mu_{n}(1-\mu_{n})\mathbf{x}_{n,:}^{T}\mathbf{x}_{n,:})
+$$ 
+Since the Bernoulli variance is a constant, the above equation can be written out as,
+$$
+\mathbf{X}^T\mathbf{S}\mathbf{X} = \mu_{1}(1-\mu_{1})\mathbf{x}_{1,:}^{T}\mathbf{x}_{1,:} + \mu_{2}(1-\mu_{2})\mathbf{x}_{2,:}^{T}\mathbf{x}_{2,:}
+$$ 
+multiplying out the vectors, the 2nd observation to the weighted sum-of-squares matrix is,
+$$
+\mathbf{X}^T\mathbf{S}\mathbf{X} = \mu_{1}(1-\mu_{1})
+\begin{bmatrix}
+1 & x_{1,1} & x_{1,2} \\
+1 & x_{1,1}^2 & x_{1,1}x_{1,2} \\
+1 & x_{1,1}x_{1,2} & x_{1,2}^2 \\
+\end{bmatrix} 
++ \mu_{2}(1-\mu_{2})\begin{bmatrix}
+1 & x_{2,1} & x_{2,2} \\
+1 & x_{2,1}^2 & x_{2,1}x_{2,2} \\
+1 & x_{2,1}x_{2,2} & x_{2,2}^2 \\
+\end{bmatrix} 
+$$ 
 ### 3g) (2 points)
 
 After fitting the model, you will make predictions on a hold-out set. You are first interested in calculating the accuracy of the model. The model, however, does not predict a class directly. It predicts a probability of the event. The predicted probability is compared to a threshold value in order to convert the prediction into a discrete class (event vs non-event). If the predicted probability is greater than the specified threshold, the prediction is classified as the event.  
 
 The confusion matrix is calculated comparing each predicted classification to the observed class. What metric tells us the fraction of times the model is correct when the event is observed?  
 
+### Solution 3g)
+The specificity or true positive rate (TPR) is the metric that tells us the fraction of times the model is correct when the event is observed.
+
 ### 3h) (2 points)
 
 The ROC curve is a graphical tool for assessing the performance of a binary classifier. What threshold value is used to construct the ROC curve?  
+
+### Solution 3h)
+A threshold value of 0.5 is used to construct the ROC curve.
 
 ### 3i) (2 points)
 
 The ROC curve can be summarized as a single quantitative metric by integrating the area under the curve (AUC). What value for the AUC corresponds to random guessing?  
 
+### Solution 3i)
+An AUC value of 0.5 is considered as random guessing since the ideal AUC value is 1.
+
 ### 3j) (2 points)
 
 If our model is struggling to correctly predict the event, can we just decrease the threshold value to improve performance? Why or why not?  
 
+### Solution 3j)
+Yes, you can decrease the threshold value to improve the performance, but that does not mean your model accurately represents the data. By lowering the threshold and increasing the sensitivity you might introduce problem on the end of the interpreter. An example given in class is falsely classifying someone with cancer, or worse yet incorrectly identifying a cancer patient with no cancer.
+
 ### 3k) (2 points)
 
 Now assume that we used Leave-One-Out (LOO) cross-validation to assess model performance and we are interested in Accuracy. What are the possible Accuracy values our model could achieve on the test set in each fold?  
+
+### Solution 3k)
+A possible accuracy values by using a LOO cross-validation is 0.9. ?? I dont know...
 
 ## Problem 4
 
