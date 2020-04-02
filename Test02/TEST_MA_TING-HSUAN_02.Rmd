@@ -70,7 +70,7 @@ $$
 \mathbf{X}_{1:2,:} = 
 \begin{bmatrix}
 1 & x_{1,1} & x_{1,2}x_{1,1}^2 \\
-1 & x_{2,1} & x_{1,2}x_{1,1}^2 \\
+1 & x_{2,1} & x_{2,2}x_{2,1}^2 \\
 \end{bmatrix}
 $$ 
 
@@ -82,12 +82,12 @@ Write out the expression for the mean trend of the 3rd observation as an inner-p
 $$
 \mu_{3} = 
 \begin{bmatrix}
+1 & x_{3,1} & x_{3,2}x_{3,1}^2 \\
+\end{bmatrix}
+\begin{bmatrix}
 \beta_{0} \\
 \beta_{1} \\
 \beta_{2} \\
-\end{bmatrix}
-\begin{bmatrix}
-1 & x_{3,1} & x_{3,2}x_{3,1}^2 \\
 \end{bmatrix}
 $$ 
 
@@ -175,14 +175,14 @@ The model in problem 1 will recieve a lower penalty in comparison to the model i
 If you decided to use k-fold cross-validation to compare the two models, how many times would each observation be used to evaluate the model performance if we used 5-fold cross-validation?  
 
 ### Solution 2e)
-Each observation will be used 5 times per model if we were to use a 5-fold corss-validation.
+Each observation will be used 1 time to evaluate model performance.
 
 ### 2f) (2 points)
 
 If we use 5-fold cross-validation, how many times would we train and test each model?  
 
 ### Solution 2f)
-Using 5-fold cross-validation, we would train the model 5 times, and testing each training model 5 times for a total of 25 validations.
+Using 5-fold cross-validation, we would train the model 5 times, and testing each training model 1 time.
 
 ### 2g) (2 points)
 
@@ -304,6 +304,7 @@ $$
 1 & x_{2,1}x_{2,2} & x_{2,2}^2 \\
 \end{bmatrix} 
 $$ 
+where the 2nd portion of the addition is the contribution from the 2nd observation.
 
 ### 3g) (2 points)
 
@@ -319,7 +320,7 @@ The specificity or true positive rate (TPR) is the metric that tells us the frac
 The ROC curve is a graphical tool for assessing the performance of a binary classifier. What threshold value is used to construct the ROC curve?  
 
 ### Solution 3h)
-A threshold value of 0.5 is used to construct the ROC curve.
+The ROC curve is constructed with multiple threashold values, ranging from 0 to 1.
 
 ### 3i) (2 points)
 
@@ -340,7 +341,7 @@ Yes, you can decrease the threshold value to improve the performance, but that d
 Now assume that we used Leave-One-Out (LOO) cross-validation to assess model performance and we are interested in Accuracy. What are the possible Accuracy values our model could achieve on the test set in each fold?  
 
 ### Solution 3k)
-A possible accuracy values by using a LOO cross-validation is 0.9. ?? I dont know...
+A possible accuracy values by using a LOO cross-validation is 0.9.
 
 ## Problem 4
 
@@ -408,7 +409,7 @@ $$
 \frac{\delta}{\delta \beta_1}\Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)] \Big) = \frac{\delta \Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)]\Big)}{\delta \mu_n}\frac{\delta \mu_n}{\delta \eta_n} \frac{\delta \eta_n}{\delta \beta_1}
 $$
 $$
-\frac{\delta y_n\log(\mu_{n}) - \log(y_n!) - \mu_n}{\delta \mu_n} = \frac{y_n}{\mu_n} -1
+\frac{\delta \Big(y_n\log(\mu_{n}) - \log(y_n!) - \mu_n\Big)}{\delta \mu_n} = \frac{y_n}{\mu_n} -1
 $$
 $$
 \frac{\delta \mu_n}{\delta \eta_1} = \exp(\eta_n)
