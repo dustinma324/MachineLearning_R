@@ -262,15 +262,15 @@ Write out the expression for the 2nd observation's log-likelihood. You may keep 
 
 ### Solution 3d)
 $$
-\log[Bernoulli(y_2 \mid \mu_2)] = y_{2}\log[\mu_2] + (1-y_2)\log[1-\mu_2]
+\log[\mathrm{Bernoulli}(y_2 \mid \mu_2)] = y_{2}\log[\mu_2] + (1-y_2)\log[1-\mu_2]
 $$
 $$ 
 \mu_2 = \mathrm{logit}^{-1} \left(\eta_2\right)
 $$
-
 $$ 
 \eta_2 = \beta_0 + \beta_1 x_{2,1} + \beta_2 x_{2,2}
 $$
+
 ### 3e) (2 points)
 
 The Hessian matrix of the log-likelihood depends on the weighting matrix, $\mathbf{S}$. Describe in words what the weighting matrix contains along its main diagonal.  
@@ -304,6 +304,7 @@ $$
 1 & x_{2,1}x_{2,2} & x_{2,2}^2 \\
 \end{bmatrix} 
 $$ 
+
 ### 3g) (2 points)
 
 After fitting the model, you will make predictions on a hold-out set. You are first interested in calculating the accuracy of the model. The model, however, does not predict a class directly. It predicts a probability of the event. The predicted probability is compared to a threshold value in order to convert the prediction into a discrete class (event vs non-event). If the predicted probability is greater than the specified threshold, the prediction is classified as the event.  
@@ -359,6 +360,11 @@ The variable $\mu_n$ is referred to as the rate, and is the expected value of a 
 
 Write out the expression for the log-likelihood of the $n$-th observation. Keep the expression in terms of the observed counts, $y_n$, and the rate $\mu_n$.  
 
+### Solution 4a)
+$$
+\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)] = y_n\log(\mu_{n}) - \log(y_n!) - \mu_n
+$$
+
 ### 4b) (3 points)
 
 In Poisson regression, we model the rate $\mu_n$. Thus, as with logistic regression we are actually modeling the expected value, not the outcome itself. The rate however is not modeled directly. As with logistic regression a transformation or *link* function is used to relate the rate, $\mu_n$, with a transformed variable, $\eta_n$:  
@@ -381,6 +387,12 @@ $$
 
 What is the inverse link function which allows back-transforming from $\eta_n$ to $\mu_n$?  
 
+### Solution 4b)
+The inverser link function to transform $\eta_n$ back to $\mu_n$ is,
+$$
+\mu_n = \exp(\eta_n)
+$$
+
 ### 4c) (12 points)
 
 You will work with a simple relationship between the single input, $x$, and the variable $\eta_n$. The deterministic function will be that the input is linearly related to the $\eta_n$:  
@@ -391,6 +403,29 @@ $$
 
 Derive the expression for the partial first derivative of the $n$-th log-likelihood with respect to $\beta_1$.  
 
+### Solution 4c)
+$$
+\frac{\delta}{\delta \beta_1}\Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)] \Big) = \frac{\delta \Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)]\Big)}{\delta \mu_n}\frac{\delta \mu_n}{\delta \eta_n} \frac{\delta \eta_n}{\delta \beta_1}
+$$
+$$
+\frac{\delta y_n\log(\mu_{n}) - \log(y_n!) - \mu_n}{\delta \mu_n} = \frac{y_n}{\mu_n} -1
+$$
+$$
+\frac{\delta \mu_n}{\delta \eta_1} = \exp(\eta_n)
+$$
+$$
+\frac{\delta \eta_n}{\delta \beta_1} = x_n
+$$
+Combining it all,
+$$
+\frac{\delta}{\delta \beta_1}\Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)] \Big) = y_n x_n - x_n \exp(\beta_0 + \beta_1 x_n)
+$$
+
 ### 4d) (10 points)
 
 Derive the expression for the partial second derivative of the log-likelihood with respect to $\beta_1$.  
+
+### Solution 4d)
+$$
+\frac{\delta^2}{\delta \beta_1^2}\Big(\log[\mathrm{Poisson}\left(y_n \mid \mu_n\right)] \Big) = - x_{n}^2 \exp(\beta_0 + \beta_1 x_n)
+$$
