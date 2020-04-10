@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### Collaborators
 
-Include the names of your collaborators here.  
+Stofanak, Patrick John  
 
 ## Overview
 
@@ -576,6 +576,7 @@ The backpropagation method is applied in the code chunk below.
 ```{r, solution_03c_a, eval=TRUE}
 backprop_grad_batch(rep(0, info_two_units$num_params), info_two_units)
 ```
+The values of beta are zero's because we are optimizing it, therefore hitting a saddle point of the betas, thus the derivative of beta parameter at a saddel point should be equivalent to zero.
 
 ### 3d)
 
