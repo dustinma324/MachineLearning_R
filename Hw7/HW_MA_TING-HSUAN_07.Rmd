@@ -11,8 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 #### Collaborators
-
-Stofanak, Patrick John  
+  
+Stofanak, Patrick John
 
 ## Overview
 
@@ -58,9 +58,11 @@ We should always start out any modeling task by exploring the data set. Since th
 
 #### SOLUTION
 
-```{r, solution_01a, eval=FALSE}
-### 
+```{r, solution_01a, eval=TRUE}
+prob_01_df %>% ggplot(aes(x = x1)) +
+  geom_bar(aes(fill = x2), position = "dodge")
 ```
+There is not a specific combination of `x1` and `x2` that dominate the count in each data set. It is fairly uniform between the two discrete varavbles.
 
 ### 1b)
 
@@ -91,9 +93,12 @@ You will now use this long-format data set to study the behavior of the continuo
 
 #### SOLUTION
 
-```{r, solution_01b, eval=FALSE}
-### 
+```{r, solution_01b, eval=TRUE}
+lf_01 %>% ggplot(aes(x1,input_value)) +
+  geom_boxplot(aes(fill = x2)) +
+  facet_wrap("input_name")
 ```
+No, the continuous variables from `x3` to `x6` all look relatively similar with regards to the discrete inputs.
 
 ### 1c)
 
@@ -107,9 +112,12 @@ Let's now study the behavior of the response `y` with respect to each of the con
 
 #### SOLUTION
 
-```{r, solution_01c, eval=FALSE}
-### 
+```{r, solution_01c, eval=TRUE}
+lf_01 %>% ggplot(aes(input_value,y)) +
+  geom_point(aes(x2)) +
+  facet_grid("x1")
 ```
+It seem like when `x2` is in the "a" category, the responses doesn't seem to vary even when `x1` changes. This behavior cannot be said about when `x2` is in category "b", as varition in the continuous response changes across different categories of `x1`.
 
 ### 1d)
 
@@ -125,10 +133,13 @@ Lastly, let's study the correlation structure between the continuous inputs. We 
 
 #### SOLUTION
 
-```{r, solution_01d, eval=FALSE}
+```{r, solution_01d, eval=TRUE}
 prob_01_df %>% 
-  dplyr::select( )
+  dplyr::select(-x1,-x2,-y) %>%
+  cor() %>%
+  corrplot::corrplot(method = "number", type = "upper")
 ```
+No, the continuous inputs are not correlated at all.
 
 ## Problem 02
 
@@ -144,10 +155,10 @@ The first step in training models with `caret` is to specify the resampling sche
 
 #### SOLUTION
 
-```{r, solution_02a, eval=FALSE}
-ctrl_k05 <- trainControl( )
+```{r, solution_02a, eval=TRUE}
+ctrl_k05 <- trainControl(method = "cv", number = 5)
 
-metric_01 <- 
+metric_01 <- "RMSE"
 ```
 
 ### 2b)
@@ -162,18 +173,24 @@ You will now fit a linear model and assess its performance with 5-fold cross-val
 
 #### SOLUTION
 
-```{r, solution_02b, eval=FALSE}
+```{r, solution_02b, eval=TRUE}
 set.seed(3321)
-fit_01_lm <- train( )
+fit_01_lm <- train(y ~ x1 + x2 + x3 + x4 + x5 + x6,
+                   data = prob_01_df,
+                   method = "lm",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05)
 
 fit_01_lm
 ```
+About 280 samples are used to test the model each fold. The cross-validation averaged R-squared value is 0.439, which is ok.
 
 ### 2c)
 
 Once you have trained a model with `caret` you can access the model object directly as `$finalModel`. Thus, we can perform all actions on `fit_01_lm$finalModel` that we would do if we had fit the model with `lm()`. The code chunk below demonstrates this by printing the OLS model coefficients (the $\beta$ parameters) for you.  
 
-```{r, show_ols_params, eval=FALSE}
+```{r, show_ols_params, eval=TRUE}
 coef(fit_01_lm$finalModel)
 ```
 
@@ -186,8 +203,9 @@ However, rather than looking at print outs or summaries for the coefficients, le
 #### SOLUTION
 
 ```{r, solution_02c}
-### 
+coefplot::coefplot(fit_01_lm$finalModel)
 ```
+Yes, three out of the eight coefficients have a confidence interval that contains zero. The meaning of a confidence interval containing zero is that there might be a chance where those specific coefficients have no effect on the model.
 
 ### 2d)
 
@@ -199,8 +217,7 @@ The `prob_01_df` data set contains `ncol(prob_01_df) - 1` inputs and 1 response.
 
 #### SOLUTION
 
-Your answer here.  
-
+Because the discrete input of `x1` is countned as well. The cross-validation fitting have determined that when `x2` is in category "b", and `x1` in bategory "B" and "C" will have the best performance.
 
 ### 2e)
 
@@ -215,7 +232,8 @@ Let's now consider fitting a linear model with all pair-wise interactions. Typin
 How many columns are in the design matrix?  
 
 ```{r, solution_02e_a}
-### 
+model.matrix(y ~ (.)^2, prob_01_df) %>% ncol()
+
 ```
 
 ### 2f)
@@ -230,12 +248,18 @@ Let's try fitting a linear model with all pair-wise interactions. Use `caret` to
 
 #### SOLUTION
 
-```{r, solution_02f, eval=FALSE}
+```{r, solution_02f, eval=TRUE}
 set.seed(3321)
-fit_01_lm_pairs <- train( )
+fit_01_lm_pairs <- train(y ~ (.)^2,
+                   data = prob_01_df,
+                   method = "lm",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05)
 
 fit_01_lm_pairs
 ```
+Yes, using pair-wise interaction provided a similiar R-squared value compared to that of the 5 fold cross-validation.
 
 ### 2g)
 
@@ -248,8 +272,9 @@ Visualize the coefficients on the model with all pair-wise interactions using `c
 #### SOLUTION
 
 ```{r, solution_02g}
-### 
+coefplot::coefplot(fit_01_lm_pairs$finalModel)
 ```
+The contribution from continuous input `x3`, discontinuous input `x2b`, pair-wise `x1C:x2b`, and pair-wise `x1B:x3` is signinifcant to the fitting of this model.
 
 ### 2h)
 
@@ -267,12 +292,18 @@ You will use the `glmnet` package to fit the elastic net model. `caret` treats t
 
 #### SOLUTION
 
-```{r, solution_02h, eval=FALSE}
+```{r, solution_02h, eval=TRUE}
 set.seed(3321)
-fit_01_glmnet_trips <- train( )
+fit_01_glmnet_trips <- train(y ~ (.)^3,
+                   data = prob_01_df,
+                   method = "glmnet",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05)
 
 fit_01_glmnet_trips
 ```
+Based on the result from the decault grid, the elastic net model is more on the Lasso regression side.
 
 ## Problem 03
 
@@ -292,14 +323,20 @@ You will fit a neural network model with `nnet`. To tell `caret` to use `nnet` y
 
 #### SOLUTION
 
-```{r, solution_03a, eval=FALSE}
+```{r, solution_03a, eval=TRUE}
 set.seed(3321)
-fit_01_nnet <- train(,
-                     trace=FALSE,
-                     linout=TRUE)
+fit_01_nnet <- train(y ~ .,
+                   data = prob_01_df,
+                   method = "nnet",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05,
+                   trace=FALSE,
+                   linout=TRUE)
 
 fit_01_nnet
 ```
+As the size increase, the Rsquared and RMSE value starts to get better and better compared to itself and the `lm` model.
 
 ### 3b)
 
@@ -313,13 +350,19 @@ Let's now try a random forest model. To train a random forest model, you must sp
 
 #### SOLUTION
 
-```{r, solution_03b, eval=FALSE}
+```{r, solution_03b, eval=TRUE}
 set.seed(3321)
-fit_01_rf <- train(,
+fit_01_rf <- train(y ~ .,
+                   data = prob_01_df,
+                   method = "rf",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05,
                    importance=TRUE)
 
 fit_01_rf
 ```
+mtry = 7 was considered the best, and it corresponds to the number of variable randomly selected per split.
 
 ### 3c)
 
@@ -335,23 +378,29 @@ Now try training a boosted tree model with `xgboost`. You must set the `method` 
 
 The boosted tree model is fit below.  
 
-```{r, solution_03c, eval=FALSE}
+```{r, solution_03c, eval=TRUE}
 set.seed(3321)
-fit_01_xgb <- train(,
-                    importance = TRUE)
+fit_01_xgb <- train(y ~ .,
+                   data = prob_01_df,
+                   method = "xgbTree",
+                   metric = metric_01,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05,
+                   importance = TRUE)
 ```
 
 Print out the best tuning parameters.    
 
-```{r, solution_03c_b, eval=FALSE}
+```{r, solution_03c_b, eval=TRUE}
 fit_01_xgb$bestTune
 ```
 
 Plot the cross-validation results for each of the tuning parameter combinations.  
 
-```{r, solution_03c_c, eval=FALSE}
+```{r, solution_03c_c, eval=TRUE}
 plot(fit_01_xgb)
 ```
+150 tress showed the best result. 
 
 ### 3d)
 
@@ -367,32 +416,33 @@ Let's now compare all of the methods we have trained. The code chunk below is st
 
 Compile all of the model cross-validation results together.  
 
-```{r, solution_03d_a, eval=FALSE}
-reg_mod_compare <- resamples(list(LM = ,
-                                  LMpairs = ,
-                                  GLMNET = ,
-                                  NNET = ,
-                                  RF = ,
-                                  XGB = ))
+```{r, solution_03d_a, eval=TRUE}
+reg_mod_compare <- resamples(list(LM = fit_01_lm,
+                                  LMpairs = fit_01_lm_pairs,
+                                  GLMNET = fit_01_glmnet_trips,
+                                  NNET = fit_01_nnet,
+                                  RF = fit_01_rf,
+                                  XGB = fit_01_xgb))
 ```
 
 The cross-validation averaged root mean squared error (RMSE) with corresponding confidence intervals are shown in the plot below.  
 
-```{r, solution_03d_b, eval=FALSE}
+```{r, solution_03d_b, eval=TRUE}
 dotplot(reg_mod_compare, metric = "RMSE")
 ```
 
 The cross-validation averaged R-squared with corresponding confidence intervals are shown below.  
 
-```{r, solution_03d_c, eval=FALSE}
+```{r, solution_03d_c, eval=TRUE}
 dotplot(reg_mod_compare, metric = "Rsquared")
 ```
+The boosted tree method is considered the best.
 
 ### 3e)
 
 Let's now make predictions with our trained models. The code chunk below defines an input grid for you. The `expand.grid()` function is used to create a grid to allow visualizing the predicted trends with respect to `x3` for several unique values of `x4`, and all combinations of the discrete inputs, `x1` and `x2`. The `x5` and `x6` inputs were set equal to their median values from the training set.  
 
-```{r, make_prediction_grid_01, eval=FALSE}
+```{r, make_prediction_grid_01, eval=TRUE}
 test_input_grid_01 <- expand.grid(x1 = unique(prob_01_df$x1),
                                   x2 = unique(prob_01_df$x2),
                                   x3 = seq(min(prob_01_df$x3), max(prob_01_df$x3), length.out = 101),
@@ -418,10 +468,10 @@ Regardless of the which model you identified to be the best, you will make predi
 
 #### SOLUTION
 
-```{r, solution_03e, eval=FALSE}
-pred_test_01_xbg <- 
+```{r, solution_03e, eval=TRUE}
+pred_test_01_xbg <- predict(fit_01_xgb, test_input_grid_01)
 
-pred_test_01_glmnet <- 
+pred_test_01_glmnet <- predict(fit_01_glmnet_trips, test_input_grid_01)
 ```
 
 ### 3f)
@@ -436,16 +486,22 @@ Let's now visualize the predictions. The two code chunks are started for you bel
 
 Plot the predictions from the elastic net model below.  
 
-```{r, solution_03f_a, eval=FALSE}
+```{r, solution_03f_a, eval=TRUE}
 test_input_grid_01 %>% 
-  mutate(pred = pred_test_01_glmnet)
+  mutate(pred = pred_test_01_glmnet) %>%
+  ggplot(aes(x3, pred)) +
+  geom_line(aes(color = x4, group = interaction(x1, x2, x4, x5, x6))) + 
+  facet_grid(rows = vars(x1), cols = vars(x2), labeller = "label_both")
 ```
 
 Plot the predictions from the boosted tree model below.  
 
-```{r, solution_03f_b, eval=FALSE}
+```{r, solution_03f_b, eval=TRUE}
 test_input_grid_01 %>% 
-  mutate(pred = pred_test_01_xbg)
+  mutate(pred = pred_test_01_xbg) %>%
+  ggplot(aes(x3, pred)) +
+  geom_line(aes(color = x4, group = interaction(x1, x2, x4, x5, x6))) + 
+  facet_grid(rows = vars(x1), cols = vars(x2), labeller = "label_both")
 ```
 
 ### 3g)
@@ -461,14 +517,15 @@ The variable importances are accessed by calling the `varImp()` function and can
 #### SOLUTION
 
 ```{r, solution_03g}
-### plot the variable importance rankings
+plot(varImp(fit_01_xgb))
 ```
+The most inportant value is discrete input variable `x2b`, and the least important is continuous input variable `x6`.
 
 ## Problem 04
 
 You will work with the Sonar data set contained in the `mlbench` package as a binary classification data set. As long as you have the `mlbench` package downloaded and installed, the code chunk below loads in the Sonar data set for you.  
 
-```{r, load_sonar_data, eval=FALSE}
+```{r, load_sonar_data, eval=TRUE}
 data("Sonar", package = "mlbench")
 ```
 
@@ -478,7 +535,7 @@ The input features of the Sonar data set correspond to sonar signal (as the name
 
 We will perform a short exploration of the features in this data set. First, let's look at summary statistics for each of the input variables. The code chunk below creates a boxplot for each input feature. All of the input features are signals which are between 0 and 1, so all inputs can be summarized with the same vertical axis.  
 
-```{r, make_sonar_boxplots, eval=FALSE}
+```{r, make_sonar_boxplots, eval=TRUE}
 Sonar %>% 
   tibble::rowid_to_column("obs_id") %>% 
   tidyr::gather(key = "input_name",
@@ -500,7 +557,7 @@ Sonar %>%
 
 #### SOLUTION
 
-Your answer here.  
+Yes, because you have some inputs in the middle that have confidence interval of greater than 1.  
 
 ### 4b)
 
@@ -514,10 +571,12 @@ Let's now consider the correlation structure of the inputs. Use the `corrplot::c
 
 #### SOLUTION
 
-```{r, solution_04b, eval=FALSE}
+```{r, solution_04b, eval=TRUE}
 Sonar %>% 
-  dplyr::select()
+  dplyr::select(-Class) %>%
+  cor() %>% corrplot::corrplot(method = "square", order = "hclust")
 ```
+There isn't a huge correlation between the inputs, but towards the begining of the input there is some correlation and some anticorrelation.
 
 ### 4c)
 
@@ -532,8 +591,11 @@ The last visualization you will make as part of a quick exploratry data analysis
 #### SOLUTION
 
 ```{r, solution_04c}
-### 
+Sonar %>%
+  ggplot(aes(Class)) +
+  geom_bar(aes(Class))
 ```
+No, that's just the input data.
 
 ## Problem 05
 
@@ -549,13 +611,14 @@ You must start, as you did with the regression problem, by specifying the resamp
 
 #### SOLUTION
 
-```{r, solution_05a, eval=FALSE}
-ctrl_k05_roc <- trainControl(,
+```{r, solution_05a, eval=TRUE}
+ctrl_k05_roc <- trainControl(method = "cv",
+                             number = 5,
                              summaryFunction = twoClassSummary,
                              classProbs = TRUE,
                              savePredictions = TRUE)
 
-metric_sonar <- 
+metric_sonar <- "ROC"
 ```
 
 ### 5b)
@@ -578,12 +641,18 @@ You must set the `preProc` argument based on your answer to Problem 4a). If you 
 
 Train the logistic regression model in the code chunk below.  
 
-```{r, solution_5b, eval=FALSE}
+```{r, solution_5b, warning=FALSE, eval=TRUE}
 set.seed(4321)
-fit_glm_sonar <- train( )
+fit_glm_sonar <- train(Class ~ .,
+                   data = Sonar,
+                   method = "glm",
+                   metric = metric_sonar,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05_roc)
 
 fit_glm_sonar
 ```
+The arear under the curve is 0.769.
 
 ### 5c)
 
@@ -599,12 +668,18 @@ Since there are relatively few observations based on the number of inputs in `So
 
 Train the elastic net model below.  
 
-```{r, solution_05c, eval=FALSE}
+```{r, solution_05c, eval=TRUE}
 set.seed(4321)
-fit_glmnet_sonar <- train( )
+fit_glmnet_sonar <- train(Class ~ .,
+                   data = Sonar,
+                   method = "glmnet",
+                   metric = metric_sonar,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05_roc)
 
 fit_glmnet_sonar
 ```
+Based on the training results, the elastic net significantly favors ridge regression.
 
 ### 5d)
 
@@ -618,13 +693,19 @@ Let's now try a neural network model with the `nnet` package. You must specify t
 
 Train the neural network with `"nnet"` below.   
 
-```{r, solution_05d, eval=FALSE}
+```{r, solution_05d, eval=TRUE}
 set.seed(4321)
-fit_nnet_sonar <- train(,
-                        trace = FALSE)
+fit_nnet_sonar <- train(Class ~ .,
+                   data = Sonar,
+                   method = "nnet",
+                   metric = metric_sonar,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05_roc,
+                   trace = FALSE)
 
 fit_nnet_sonar
 ```
+Yes.
 
 ### 5e)
 
@@ -640,13 +721,19 @@ Now use a random forest model. You can use the default tuning grid to the `mtry`
 
 Train the random forest below.  
 
-```{r, solution_05e, eval=FALSE}
+```{r, solution_05e, eval=TRUE}
 set.seed(4321)
-fit_rf_sonar <- train(,
-                      importance = TRUE)
+fit_rf_sonar <- train(Class ~ .,
+                   data = Sonar,
+                   method = "rf",
+                   metric = metric_sonar,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05_roc,
+                   importance = TRUE)
 
 fit_rf_sonar
 ```
+mtry = 2 was selected as the best, it was picked because $mtry = \sqrt(D)$, and D corresponds to classes, and is 2 in our case.
 
 ### 5f)
 
@@ -662,21 +749,26 @@ Lastly, train a boosted tree model with XGBoost. You must specify the `method` a
 
 Train the boosted tree model below.  
 
-```{r, solution_05f, eval=FALSE}
+```{r, solution_05f, eval=TRUE}
 set.seed(4321)
-fit_xgb_sonar <- train(,
-                       importance = TRUE)
+fit_xgb_sonar <- train(Class ~ .,
+                   data = Sonar,
+                   method = "xgbTree",
+                   metric = metric_sonar,
+                   preProc = c("center", "scale"),
+                   trControl = ctrl_k05_roc,
+                   importance = TRUE)
 ```
 
 The best identifed tuning parameters are given below.  
 
-```{r, solution_05f_b, eval=FALSE}
+```{r, solution_05f_b, eval=TRUE}
 fit_xgb_sonar$bestTune
 ```
 
 The cross-validation results are printed to the screen for you below.  
 
-```{r, solution_05f_c, eval=FALSE}
+```{r, solution_05f_c, eval=TRUE}
 plot(fit_xgb_sonar)
 ```
 
@@ -694,15 +786,16 @@ The resampling results are compiled together using the `resamples()` function. Y
 
 Complete the list below. Discuss which model is the best.  
 
-```{r, solution_05g, eval=FALSE}
-sonar_roc_compare <- resamples(list(GLM = ,
-                                    GLMNET = ,
-                                    NNET = ,
-                                    RF = ,
-                                    XGB = ))
+```{r, solution_05g, eval=TRUE}
+sonar_roc_compare <- resamples(list(GLM = fit_glm_sonar,
+                                    GLMNET = fit_glmnet_sonar,
+                                    NNET = fit_nnet_sonar,
+                                    RF = fit_rf_sonar,
+                                    XGB = fit_xgb_sonar))
 
 dotplot(sonar_roc_compare)
 ```
+Random forest is shown as the best method for this data set.
 
 ## Problem 06
 
@@ -723,14 +816,15 @@ There are a lot of inputs to the Sonar data set. Thus, the variable importance r
 Plot the variable importance rankings for all inputs below.  
 
 ```{r, solution_06a_a}
-### 
+plot(varImp(fit_rf_sonar))
 ```
 
 Plot the top 20 ranked inputs below.  
 
 ```{r, solution_06a_b}
-### 
+plot(varImp(fit_rf_sonar), top = 20)
 ```
+6 variables are above 70% importance.
 
 ### 6b)
 
@@ -740,7 +834,7 @@ The code chunk creates the test grid in a few steps. The `make_sonar_input_grid(
 
 The `make_sonar_input_grid()` is applied to all inputs in the Sonar data set by iterating with the `purrr::map()` function. The result is a list with elements containing specific values to use for each input. That list is then passed into the `expand.grid()` function in order to create the grid of input values to make predictions with.  
 
-```{r, make_sonar_test_grid, eval=FALSE}
+```{r, make_sonar_test_grid, eval=TRUE}
 ### make a test input grid to visualize trends
 make_sonar_input_grid <- function(var_name, viz_input_names, all_data)
 {
@@ -786,7 +880,7 @@ test_sonar_grid <- expand.grid(test_sonar_list,
 
 To help understand what happened in the code chunk above, the number of unique values per input is displayed for each input in the `test_sonar_grid` object with the bar chart below. As you should see below, the 11th and 12th inputs have 25 unique values. The 9th and 10th inputs have 5 unique values. All other inputs have just a single unique value. You will therefore study the trends associated with the 25 by 25 grid of points in `V11` and `V12` for 25 different combinations of `V9` and `V10`, with all other inputs set to their median value from the Sonar data set.  
 
-```{r, show_test_grid_combo_counts, eval=FALSE}
+```{r, show_test_grid_combo_counts, eval=TRUE}
 test_sonar_grid %>% 
   tibble::rowid_to_column("pred_id") %>% 
   tidyr::gather(key = "key", value = "value", -pred_id) %>% 
@@ -812,21 +906,21 @@ Make predictions with the random forest and elastic net models. The `head()` fun
 
 #### SOLUTION
 
-```{r, solution_06b, eval=FALSE}
-pred_test_sonar_glmnet <- 
+```{r, solution_06b, eval=TRUE}
+pred_test_sonar_glmnet <- predict(fit_glmnet_sonar, test_sonar_grid)
 
-pred_test_sonar_rf <- 
+pred_test_sonar_rf <- predict(fit_rf_sonar, test_sonar_grid)
 ```
 
 The class (data type) for the predictions.  
 
-```{r, solution_06b_b, eval=FALSE}
+```{r, solution_06b_b, eval=TRUE}
 class(pred_test_sonar_rf)
 ```
 
 The first few predictions from the random forest model are shown below.  
 
-```{r, solution_06b_c, eval=FALSE}
+```{r, solution_06b_c, eval=TRUE}
 pred_test_sonar_rf %>% head()
 ```
 
@@ -844,7 +938,7 @@ The first code chunk visualizes the predicted classifications from the elastic n
 
 Elastic net predicted classifications are shown below.  
 
-```{r, solution_06c_a, eval=FALSE}
+```{r, solution_06c_a, eval=TRUE}
 test_sonar_grid %>% 
   mutate(pred_class = pred_test_sonar_glmnet) %>% 
   mutate(view_V9 = forcats::fct_rev(sprintf("V9:%1.3f", V9))) %>% 
@@ -860,7 +954,7 @@ test_sonar_grid %>%
 
 Random forest predicted classifications are shown below.  
 
-```{r, solution_06c_b, eval=FALSE}
+```{r, solution_06c_b, eval=TRUE}
 test_sonar_grid %>% 
   mutate(pred_class = pred_test_sonar_rf) %>% 
   mutate(view_V9 = forcats::fct_rev(sprintf("V9:%1.3f", V9))) %>% 
@@ -873,6 +967,7 @@ test_sonar_grid %>%
   labs(title = "Random forest classifications") +
   theme_bw()
 ```
+The elastic net shows almost a linear relationship between variable `V11` and `v12` with the prediction of the outcome. As both variable increases, the more metal classification appears. This behavior is also shown in the random forest classification, where `V11` and `V12` increases, the number of prediction for metal detection increases. 
 
 ### 6d)
 
@@ -890,19 +985,19 @@ The result will no longer be a "regular" vetor, but will be a data.frame. Each c
 
 Make predictions for the class probabilities for the elastic net and random forest models.  
 
-```{r, solution_06d, eval=FALSE}
-pred_test_prob_sonar_glmnet <- 
+```{r, solution_06d, eval=TRUE}
+pred_test_prob_sonar_glmnet <- predict(fit_glmnet_sonar, test_sonar_grid, type = "prob")
 
-pred_test_prob_sonar_rf <- 
+pred_test_prob_sonar_rf <- predict(fit_rf_sonar, test_sonar_grid, type = "prob")
 ```
 
 The random forest predicted probabilities are shown in the code chunks below.  
 
-```{r, solution_06d_b, eval=FALSE}
+```{r, solution_06d_b, eval=TRUE}
 pred_test_prob_sonar_rf %>% class()
 ```
 
-```{r, solution_06d_c, eval=FALSE}
+```{r, solution_06d_c, eval=TRUE}
 pred_test_prob_sonar_rf %>% head()
 ```
 
@@ -918,7 +1013,7 @@ The predicted class probabilities can now be visualized in a surface, similar to
 
 Elastic net predicted probabilities are shown below.  
 
-```{r, solution_06e, eval=FALSE}
+```{r, solution_06e, eval=TRUE}
 test_sonar_grid %>% 
   bind_cols(pred_test_prob_sonar_glmnet) %>% 
   mutate(view_V9 = forcats::fct_rev(sprintf("V9:%1.3f", V9))) %>% 
@@ -936,7 +1031,7 @@ test_sonar_grid %>%
 
 The random forest predicted probabilities are shown below.  
 
-```{r, solution_06e_b, eval=FALSE}
+```{r, solution_06e_b, eval=TRUE}
 test_sonar_grid %>% 
   bind_cols(pred_test_prob_sonar_rf) %>% 
   mutate(view_V9 = forcats::fct_rev(sprintf("V9:%1.3f", V9))) %>% 
@@ -951,19 +1046,4 @@ test_sonar_grid %>%
   labs(title = "Random forest predicted probabilities") +
   theme_bw()
 ```
-
-## BONUS
-
-You have two bonus questions you can try to earn extra credit. These questions are not required to be completed.  
-
-### BONUS - 1 (10 points)
-
-You trained all of the `caret` models with the default tuning grids. However, we have seen in lecture how to use the `tuneGrid` argument to try out custom search grids, in an attempt to improve model performance. Try to tune the regression models to get better performance than what you had in Problem 3.  
-
-You may add as many code chunks as you want. When you tune a model, create a new variable for that trained object. For example, if you would try and tune the elastic net model with all triplet interactions, name the tuned model `fit_01_glmnet_trips_tune` to make sure it's a different variable than the default result.  
-
-### BONUS - 2 (15 points)
-
-You trained models to maximize the area under the ROC curve. But we did not visualize the ROC curves for the models. Example code provided in lecture and earlier in the semester demonstrated how to use the `plotROC` package to create ROC curves, which average over the cross-validation results. Compare 2 of the classification models by comparing their ROC curves averaged over the cross-validation results. Then show the 2 models as separate subplots to allow showing the ROC curve associated with each fold.  
-
-You will need to access the saved hold-out set predictions to create the ROC curve. The predictions are contained in the `$pred` field of the `caret` object. Thus, to the elastic net hold-out set predictions are in `fit_glmnet_sonar$pred`. Remember that the hold-out set predictions include ALL tuning parameter combinations. So you will need to filter to the best tuned parameter values.  
+The predicted probabilities for the "M" level are consistent with the classification surfaces visualized in Problem 6c) as they look the same, and follows the general linear profile for elastic net, and nonlinear profile for random forest.
