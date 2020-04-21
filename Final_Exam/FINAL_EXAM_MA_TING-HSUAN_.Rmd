@@ -149,7 +149,7 @@ $$
 Write out the expression for the $n$-th observation's binary cross entropy loss, $L_n$, in terms of the observed binary outcome $y_n$ and the neural network event probability $\mu_n$.  
 
 $$
-L_n = (y_n - \mu_n)^2
+L_n = -(y_n \log[\mu_n] + (1-y_n \log[1-\mu_n])
 $$
 
 ### 3c)
@@ -167,11 +167,19 @@ $$
 in terms of other "component" derivatives.  
 
 $$
-\frac{\delta L_n}{\delta \alpha_1} = \frac{\delta}{\delta \alpha_1}(y_n - \mu_n)^2 = -2(y_n - \mu_n) \frac{\delta \mu_n}{\delta \alpha_1}
+\frac{\delta L_n}{\delta \alpha_1} = \frac{\delta L_n}{\delta \mu_n} \frac{\delta \mu_n}{\delta f_n} \frac{\delta f_n}{\delta \alpha_1}
 $$
 
 $$
-\frac{\delta \mu_n}{\delta \alpha_k} = h_{n,1}
+\frac{\delta L_n}{\delta \mu_n} = \frac{y_n}{\mu_n} - \frac{1-y_n}{1-\mu_n}
+$$
+
+$$
+\frac{\delta \mu_n}{\delta f_n} = \mu_n (1-\mu_n)
+$$
+
+$$
+\frac{\delta f_n}{\delta \alpha_1} = h_{n,1}
 $$
 
 ### 3d)
@@ -181,7 +189,7 @@ Derive the expression the partial derivative of $L_n$ with respect to $\alpha_1$
 *HINT*: A certain simple model could help...
 
 $$
-\frac{\delta L_n}{\delta \alpha_1} = -2(y_n - \mu_n)h_{n,1}
+\frac{\delta L_n}{\delta \alpha_1} = (y_n - \mu_n)h_{n,1}
 $$
 
 ### 3e)
@@ -207,8 +215,7 @@ b) The SSE is minimized
 c) The total within sum of squares of each region is minimized  
 d) None of the above  
 
-**Your Answer:** 
-a) The variance within each region is maximized    
+**Your Answer: b** 
 
 ### 4b)
 
@@ -219,7 +226,7 @@ b) Subsampling
 c) Linking    
 d) None of the above  
 
-a) Boosting 
+**Your Answer: a** 
 
 ### 4c)
 
@@ -230,7 +237,7 @@ b) Regularization
 c) Cross-validation  
 d) Clustering  
 
-a) Bootstrap   
+**Your Answer: a**  
 
 ### 4d)
 
@@ -242,8 +249,7 @@ No, we want it to overfit so the final model will be an average of all the bagge
 
 The random forest is an extension of the bagged tree model. The primary tuning parameter is `mtry`, the number of randomly selected variables to consider at each split. Why would a low value of `mtry` help when there are many correlated input variables, compared to a standard bagged tree model?  
 
-**Your Answer:** 
-Low value of `mtry`
+Low value of `mtry` forces some trees to use variables that are not highly correlated, thus leading to a more diverse trees to be ensembled over. 
 
 ### 4f)
 
@@ -254,8 +260,7 @@ b) 12
 c) 25  
 d) 0  
 
-**Your Answer:** 
-a) 5
+**Your Answer: c** 
 
 ### 4g)
 
@@ -266,8 +271,7 @@ b) The error from the previous tree
 c) The learning rate from the tree  
 d) The dendogram from the previous tree  
 
-**Your Answer:** 
-a) The variance of the previous tree
+**Your Answer: b** 
 
 ### 4h)
 
@@ -278,7 +282,7 @@ b) Less trees
 c) Equal number of trees  
 d) Depends on the weight decay  
 
-**Your Answer:**  
+**Your Answer: a**  
 
 ## Problem 05
 
@@ -308,14 +312,13 @@ $\mathbf{V}$ is related to the eigenvalues of the covariance matrix of the varia
 
 TRUE or FALSE: The first principal component (PC) is uncorrelated to the second PC, but is correlated to all other PCs.  
 
-False
+**Your Answer: False**
 
 ### 5d)
 
 What is the reconstruction error equal to if all PCs are used to reconstruct the original variables?  
 
-**Your Answer:** 
-Sum of the square error.
+Zero
 
 ### 5e)
 
@@ -326,14 +329,13 @@ b) Proportion of variance explained
 c) Eigenvalue criterion  
 d) Hartigan's rule  
 
-**Your Answer:** 
-d) Hartigan's rule.
+**Your Answer: d**
 
 ### 5f)
 
 Why is it usually a good idea to standardize the variables before performing PCA?
 
-So any adjustments to a component is in a standardized set of units.
+We standardize when performing PCA because when using not standardized variables, PCA will take the largest value input. Thus, PCA will decide those are the more important input variables. 
 
 ### 5g)
 
@@ -344,8 +346,7 @@ b) The Likelihood
 c) Distance  
 d) Variable averages  
 
-**Your Answer:** 
-a) Variable variances.
+**Your Answer: c**
 
 ## Problem 06
 
@@ -360,7 +361,7 @@ b) The probability of the event, $\mu$
 c) The logistic function  
 d) The $\boldsymbol{\beta}$ parameters are the only unknowns  
 
-a) The likelihood noise, $\sigma$   
+**Your Answer: a**  
 
 ### 6b)
 
@@ -371,7 +372,7 @@ b) The variance of the $\boldsymbol{\beta}$ parameters
 c) The marginal likelihood  
 d) The sum of squared errors  
 
-d) The sum of squared errors 
+**Your Answer: d** 
 
 ### 6c)
 
@@ -382,7 +383,7 @@ b) $\sigma \left(\mathbf{X}^{T} \mathbf{X} \right)^{-1} \mathbf{X}^{T} \mathbf{y
 c) $\left(\mathbf{X}^{T} \mathbf{X} \right)^{-1}$  
 d) The MLE does not have a closed form solution  
 
-a) $\left( \mathbf{X}^{T} \mathbf{X} \right)^{-1} \mathbf{X}^{T} \mathbf{y}$ 
+**Your Answer: a** 
 
 ### 6d)
 
@@ -393,7 +394,7 @@ b) How we will remove outliers
 c) The prior distributions for all unknown parameters  
 d) The marginal likelihood  
 
-c) The prior distributions for all unknown parameters   
+**Your Answer: c**   
 
 ### 6e)
 
@@ -404,7 +405,7 @@ b) Determine the Hessian matrix at the posterior mode
 c) Calculate R-squared at the posterior mode  
 d) Invert the Hessian matrix  
 
-d) Invert the Hessian matrix   
+**Your Answer: c**   
 
 ### 6f)
 
@@ -415,7 +416,7 @@ b) A Multinomial
 c) A Multivariate Normal  
 d) Independent Gaussians  
 
-c) A Multivariate Normal 
+**Your Answer: c**
 
 ## Problem 07
 
@@ -429,7 +430,7 @@ Lasso regression uses a double exponential pdf.
 
 Bayesian inference for a constant unknown event probability $\mu$ with a Binomial likelihood and a Beta prior distribution results in what type of posterior distribution on $\mu$?  
 
-A binomial distribution.
+A beta distribution.
 
 ### 7c)
 
@@ -445,18 +446,17 @@ $$
 
 TRUE or FALSE: Logistic regression does not have a closed form solution for the Maximum Likelihood Estimates (MLEs) of the unknown parameters.  
 
-**Your Answer:** 
-TRUE
+**Your Answer: True** 
+
 
 ### 7e)
 
 Fitting logistic regression models by maximizing the liklihood breaks down under what condition?  
 
-**Your Answer:** 
-
+The model breaks when there's a definity boundary between the data.
 
 ### 7f)
 
 The basic definition of probability is:  
 
-The count of the event divided by the total number of events.
+The count of the event happening divided by the total number of events.
